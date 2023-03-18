@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+
+  db-mysql:
+    image: mysql:5.7
+    container_name: mysql-db-biblioteca
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: biblioteca
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data-biblioteca:/var/lib/mysql
+    networks:
+      - network-biblioteca
+
+volumes:
+  db-data-biblioteca: {}
+
+networks:
+  network-biblioteca:
+    driver: bridge
