@@ -11,6 +11,9 @@ import com.biblioteca.service.exceptions.EditoraNaoEncontradaException;
 import com.biblioteca.service.exceptions.EditoraNullException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,8 +60,10 @@ public class EditoraService {
         return new EditoraResponse(optionalEditora.get());
     }
 
-    public List<EditoraResponse> buscarTodasEditoras(){
-        return repository.findAll().stream().map(editora -> new EditoraResponse(editora)).toList();
+    public Page<EditoraResponse> buscarTodasEditoras(Integer page, Integer linesPerPage,
+                                                     String direction, String orderBy) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest).map(EditoraResponse::new);
     }
 
     @Transactional(rollbackForClassName = {"EditoraNaoEncontradaException", "EditoraNullException"})
