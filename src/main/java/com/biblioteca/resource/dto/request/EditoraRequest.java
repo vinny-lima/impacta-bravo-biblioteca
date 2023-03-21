@@ -3,7 +3,7 @@ package com.biblioteca.resource.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class EditoraResquest {
+public class EditoraRequest {
 
     @NotBlank(message = "Campo razao social é obrigatório")
     private String razaoSocial;
@@ -28,9 +28,9 @@ public class EditoraResquest {
     @NotBlank(message = "Campo uf é obrigatório")
     private String uf;
 
-    public EditoraResquest(String razaoSocial, String nomeFantasia, String documento,
-                           String telefone, String email, String logradouro, Integer numero,
-                           String complemento, String bairro, String municipio, String uf) {
+    public EditoraRequest(String razaoSocial, String nomeFantasia, String documento,
+                          String telefone, String email, String logradouro, Integer numero,
+                          String complemento, String bairro, String municipio, String uf) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
         this.documento = documento;

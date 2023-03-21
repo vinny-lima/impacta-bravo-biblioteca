@@ -3,7 +3,8 @@ package com.biblioteca.service;
 import com.biblioteca.entities.Editora;
 import com.biblioteca.entities.Livro;
 import com.biblioteca.repository.EditoriaRepository;
-import com.biblioteca.resource.dto.request.EditoraResquest;
+import com.biblioteca.repository.LivroRepository;
+import com.biblioteca.resource.dto.request.EditoraRequest;
 import com.biblioteca.resource.dto.response.EditoraResponse;
 import com.biblioteca.service.exceptions.EditoraIntegridadeDadosException;
 import com.biblioteca.service.exceptions.EditoraJaCadastradaException;
@@ -24,17 +25,17 @@ import java.util.Optional;
 @Service
 public class EditoraService {
 
-    private EditoriaRepository repository;
-    private LivroService livroService;
+    private final EditoriaRepository repository;
+    private final LivroRepository livroRepository;
 
     @Autowired
-    public EditoraService(EditoriaRepository repository, LivroService livroService) {
+    public EditoraService(EditoriaRepository repository, LivroRepository livroRepository) {
         this.repository = repository;
-        this.livroService = livroService;
+        this.livroRepository = livroRepository;
     }
 
     @Transactional(rollbackForClassName = {"EditoraJaCadastradaException", "EditoraNullException"})
-    public EditoraResponse salvar(EditoraResquest dto){
+    public EditoraResponse salvar(EditoraRequest dto){
         if (repository == null) throw new EditoraNullException("EditoraResquest nulo.");
 
         if (editoraExiste(dto)) throw new EditoraJaCadastradaException("Editora já existe cadastrada com essa razão social: "
@@ -67,12 +68,13 @@ public class EditoraService {
     }
 
     @Transactional(rollbackForClassName = {"EditoraNaoEncontradaException", "EditoraNullException"})
-    public void atualizarEditora(EditoraResquest resquest, Integer id){
+    public void atualizarEditora(EditoraRequest resquest, Integer id){
 
         EditoraResponse editoraResponseSalva = buscarPorId(id);
         Editora editoraSalva = editoraResponseToEditora(editoraResponseSalva);
-        BeanUtils.copyProperties(resquest, editoraSalva);
+        BeanUtils.copyProperties(resquest, editoraSalva, "dataCriacao");
         editoraSalva.setId(id);
+        editoraSalva.setDataCriacao(editoraResponseSalva.getDataCriacao());
         editoraSalva.setDataAtualizacao(LocalDate.now());
         repository.save(editoraSalva);
     }
@@ -81,7 +83,7 @@ public class EditoraService {
             "EditoraIntegridadeDadosException"})
     public void apagarEditora(Integer id){
         EditoraResponse editoraResponse = buscarPorId(id);
-        List<Livro> livros = livroService.buscarLivrosPorEditoraId(id);
+        List<Livro> livros = livroRepository.findByEditoraId(id);
 
         if (!livros.isEmpty()) throw new EditoraIntegridadeDadosException("Não foi possivel apagar editora: "
         +editoraResponse.getRazaoSocial()+ ", Pois ela tem livros atrelados a ela salvos no banco de dados.");
@@ -89,14 +91,14 @@ public class EditoraService {
         repository.deleteById(id);
     }
 
-    private boolean editoraExiste(EditoraResquest editoraResquest){
-        Optional<Editora> optionalEditora = repository.findByRazaoSocial(editoraResquest.getRazaoSocial());
-        return optionalEditora.isPresent();
+    private boolean editoraExiste(EditoraRequest editoraResquest){
+        return repository.findByRazaoSocial(editoraResquest.getRazaoSocial()).isPresent();
+
     }
 
-    private Editora editoraResponseToEditora(EditoraResponse editoraResponse){
+    public Editora editoraResponseToEditora(EditoraResponse editoraResponse){
         return new Editora(
-                null,
+                editoraResponse.getId(),
                 editoraResponse.getRazaoSocial(),
                 editoraResponse.getNomeFantasia(),
                 editoraResponse.getDocumento(),
@@ -107,11 +109,13 @@ public class EditoraService {
                 editoraResponse.getComplemento(),
                 editoraResponse.getBairro(),
                 editoraResponse.getMunicipio(),
-                editoraResponse.getUf()
+                editoraResponse.getUf(),
+                editoraResponse.getDataCriacao(),
+                editoraResponse.getDataAtualizacao()
         );
     }
 
-    private Editora editoraRequestToEditora(EditoraResquest editoraResquest){
+    private Editora editoraRequestToEditora(EditoraRequest editoraResquest){
         return new Editora(
                 null,
                 editoraResquest.getRazaoSocial(),
@@ -124,7 +128,9 @@ public class EditoraService {
                 editoraResquest.getComplemento(),
                 editoraResquest.getBairro(),
                 editoraResquest.getMunicipio(),
-                editoraResquest.getUf()
+                editoraResquest.getUf(),
+                null,
+                null
         );
     }
 }

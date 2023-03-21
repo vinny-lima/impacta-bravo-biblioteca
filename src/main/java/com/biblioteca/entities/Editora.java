@@ -38,7 +38,8 @@ public class Editora {
     public Editora(Integer id, String razaoSocial, String nomeFantasia,
                    String documento, String telefone, String email,
                    String logradouro, Integer numero, String complemento,
-                   String bairro, String municipio, String uf) {
+                   String bairro, String municipio, String uf,
+                   LocalDate dataCriacao, LocalDate dataAtualizacao) {
         this.id = id;
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
@@ -51,6 +52,8 @@ public class Editora {
         this.bairro = bairro;
         this.municipio = municipio;
         this.uf = uf;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public Integer getId() {

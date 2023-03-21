@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class Livro {
     private Integer paginas;
     private String isbn;
     @ManyToOne
+    @JoinColumn(name = "editora_id")
     private Editora editora;
     @Column(name = "data_criacao")
     private LocalDate dataCriacao;
@@ -30,8 +32,8 @@ public class Livro {
 
     public Livro() {}
 
-    public Livro(Integer id, String titulo, String subtitulo, String descricao, Integer paginas,
-                 String isbn, Editora editora, LocalDate dataCriacao, LocalDate dataAtualizacao) {
+    public Livro(Integer id, String titulo, String subtitulo, String descricao,
+                 Integer paginas, String isbn, Editora editora) {
         this.id = id;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
@@ -39,8 +41,6 @@ public class Livro {
         this.paginas = paginas;
         this.isbn = isbn;
         this.editora = editora;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
     }
 
     public Integer getId() {

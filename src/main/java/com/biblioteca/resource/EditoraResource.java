@@ -1,6 +1,6 @@
 package com.biblioteca.resource;
 
-import com.biblioteca.resource.dto.request.EditoraResquest;
+import com.biblioteca.resource.dto.request.EditoraRequest;
 import com.biblioteca.resource.dto.response.EditoraResponse;
 import com.biblioteca.service.EditoraService;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ import java.net.URI;
 @RequestMapping("/editoras")
 public class EditoraResource {
 
-    private EditoraService service;
+    private final EditoraService service;
 
     @Autowired
     public EditoraResource(EditoraService service) {
@@ -32,7 +32,7 @@ public class EditoraResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid @RequestBody EditoraResquest request){
+    public ResponseEntity<Void> salvar(@Valid @RequestBody EditoraRequest request){
         EditoraResponse editoraResponse = service.salvar(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(editoraResponse.getId()).toUri();
@@ -54,7 +54,7 @@ public class EditoraResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarEditora(@Valid @RequestBody EditoraResquest request,
+    public ResponseEntity<Void> atualizarEditora(@Valid @RequestBody EditoraRequest request,
                                                  @PathVariable Integer id){
         service.atualizarEditora(request, id);
         return ResponseEntity.noContent().build();
