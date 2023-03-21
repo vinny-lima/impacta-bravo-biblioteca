@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.biblioteca</groupId>
-	<artifactId>Biblioteca</artifactId>
+	<artifactId>impacta-bravo-biblioteca</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Biblioteca</name>
-	<description>Projeto de gereciamento de biblioteca</description>
+	<name>impacta-bravo-biblioteca</name>
+	<description>Projeto de gerenciamento de biblioteca</description>
 	<properties>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
