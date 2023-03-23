@@ -17,6 +17,16 @@ services:
     networks:
       - network-biblioteca
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx-front
+    ports:
+      - 80:80
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - network-biblioteca
+
 volumes:
   db-data-biblioteca: {}
 
