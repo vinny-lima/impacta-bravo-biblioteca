@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Impacta Tecnologia - Biblioteca Bravo</title>
+    <link rel="icon" href="assets/icons/favicon.ico">
+    <link rel="stylesheet" href="libraries/bootstrap-5.2.3-dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="libraries/fontawesome-free-6.3.0-web/css/all.min.css"/>
+    <link rel="stylesheet" href="libraries/jquery-ui-1.13.2/themes/base/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="libraries/select2-4.0.13/dist/css/select2.min.css"/>
+    <link rel="stylesheet" href="libraries/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script defer src="libraries/jquery/jquery-3.6.4.min.js"></script>
+    <script defer src="libraries/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+    <script defer src="libraries/jquery-validation-1.19.5/dist/jquery.validate.min.js"></script>
+    <script defer src="libraries/jquery-validation-1.19.5/dist/additional-methods.min.js"></script>
+    <script defer src="libraries/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+    <script defer src="libraries/select2-4.0.13/dist/js/select2.full.min.js"></script>
+    <script defer src="libraries/bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
+    <script defer src="libraries/DataTables/datatables.min.js"></script>
+    <script defer src="js/main/definicoes.js"></script>
+    <script defer src="js/main/helpers.js"></script>
+    <script defer src="js/main/menu.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto px-0">
+                <aside id="sidebar" class="collapse collapse-horizontal border-end bg-dark show min-vh-100">
+                    <div id="sidebar-nav" class="list-group border-0 rounded-0">
+                        <a href="/home" class="nav-link list-group-item bg-dark border-end-0 d-inline-block text-light text-truncate fs-5 active" data-bs-parent="#sidebar"><span>Biblioteca Bravo</span></a>
+                        <a href="/livros" class="nav-link list-group-item bg-dark border-end-0 d-inline-block text-white-50 text-truncate" data-bs-parent="#sidebar"><i class="fa fa-book-open"></i> <span>Livros</span></a>
+                        <a href="/autores" class="nav-link list-group-item bg-dark border-end-0 d-inline-block text-white-50 text-truncate" data-bs-parent="#sidebar"><i class="fa fa-users"></i> <span>Autores</span></a>
+                        <a href="/generos_literarios" class="nav-link list-group-item bg-dark border-end-0 d-inline-block text-white-50 text-truncate" data-bs-parent="#sidebar"><i class="fa fa-pencil"></i> <span>Gêneros Literários</span></a>
+                    </div>
+                </aside>
+            </div>
+            
+            <div class="col p-2 min-vh-100">
+                <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse" class="text-decoration-none">
+                    <i class="fa fa-bars fa-lg text-dark"></i>
+                </a>
+                <main id="app" class="p-2"></main>
+            </div>
+        </div>
+
+        <div class="row">
+            <footer class="col bg-white text-center p-3 sticky-bottom">
+                <a class="text-decoration-none" href="https://www.impacta.edu.br/" target="_blank" rel="noreferrer nofollow">Impacta Tecnologia</a>
+                <br/>
+                <span>Desenvolvido por alunos - </span>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
