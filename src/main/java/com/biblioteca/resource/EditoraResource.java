@@ -32,11 +32,11 @@ public class EditoraResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid @RequestBody EditoraRequest request){
+    public ResponseEntity<EditoraResponse> salvar(@Valid @RequestBody EditoraRequest request){
         EditoraResponse editoraResponse = service.salvar(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(editoraResponse.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(editoraResponse);
     }
 
     @GetMapping("/{id}")
@@ -54,10 +54,11 @@ public class EditoraResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarEditora(@Valid @RequestBody EditoraRequest request,
-                                                 @PathVariable Integer id){
-        service.atualizarEditora(request, id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<EditoraResponse> atualizarEditora(
+            @Valid @RequestBody EditoraRequest request,
+            @PathVariable Integer id){
+        EditoraResponse editoraResponse = service.atualizarEditora(request, id);
+        return ResponseEntity.ok(editoraResponse);
     }
 
     @DeleteMapping("/{id}")

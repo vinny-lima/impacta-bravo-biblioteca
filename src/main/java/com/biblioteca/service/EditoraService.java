@@ -68,7 +68,7 @@ public class EditoraService {
     }
 
     @Transactional(rollbackForClassName = {"EditoraNaoEncontradaException", "EditoraNullException"})
-    public void atualizarEditora(EditoraRequest resquest, Integer id){
+    public EditoraResponse atualizarEditora(EditoraRequest resquest, Integer id){
 
         EditoraResponse editoraResponseSalva = buscarPorId(id);
         Editora editoraSalva = editoraResponseToEditora(editoraResponseSalva);
@@ -76,7 +76,8 @@ public class EditoraService {
         editoraSalva.setId(id);
         editoraSalva.setDataCriacao(editoraResponseSalva.getDataCriacao());
         editoraSalva.setDataAtualizacao(LocalDate.now());
-        repository.save(editoraSalva);
+        Editora editora = repository.save(editoraSalva);
+        return new EditoraResponse(editora);
     }
 
     @Transactional(rollbackForClassName = {"EditoraNaoEncontradaException", "EditoraNullException",

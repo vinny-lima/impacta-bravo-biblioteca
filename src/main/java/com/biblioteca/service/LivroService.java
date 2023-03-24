@@ -65,7 +65,7 @@ public class LivroService {
     }
 
     @Transactional(rollbackForClassName = {"LivroNaoEncontradoException", "LivroNullException"})
-    public void atualizarLivro(LivroRequest resquest, Integer id){
+    public LivroResponse atualizarLivro(LivroRequest resquest, Integer id){
 
         LivroResponse livroResponseSalvo = buscarPorId(id);
         EditoraResponse editoraResponse = editoraService.buscarPorId(resquest.getEditoraId());
@@ -75,7 +75,8 @@ public class LivroService {
         livroSalvo.setId(id);
         livroSalvo.setDataCriacao(livroResponseSalvo.getDataCriacao());
         livroSalvo.setDataAtualizacao(LocalDate.now());
-        repository.save(livroSalvo);
+        Livro livro = repository.save(livroSalvo);
+        return livroToLivroResponse(livro, editora);
     }
 
     @Transactional
@@ -107,7 +108,7 @@ public class LivroService {
                 null,
                 dto.getTitulo(),
                 dto.getSubtitulo(),
-                dto.getTitulo(),
+                dto.getDescricao(),
                 dto.getPaginas(),
                 dto.getIsbn(),
                 editora
@@ -119,10 +120,15 @@ public class LivroService {
                 dto.getId(),
                 dto.getTitulo(),
                 dto.getSubtitulo(),
-                dto.getTitulo(),
+                dto.getDescricao(),
                 dto.getPaginas(),
                 dto.getIsbn(),
                 editora
         );
+    }
+
+    public LivroResponse livroToLivroResponse(Livro livro, Editora editora){
+        livro.setEditora(editora);
+        return new LivroResponse(livro);
     }
 }

@@ -33,11 +33,12 @@ public class LivroResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid @RequestBody LivroRequest request){
+    public ResponseEntity<LivroResponse> salvar(@Valid @RequestBody LivroRequest request){
         LivroResponse livroResponse = service.salvar(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(livroResponse.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+
+        return ResponseEntity.created(uri).body(livroResponse);
     }
 
     @GetMapping("/{id}")
@@ -50,15 +51,16 @@ public class LivroResource {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC")String direction,
-            @RequestParam(value = "orderBy", defaultValue = "titulo")String orderBy){
+            @RequestParam(value = "orderBy", defaultValue = "isbn")String orderBy){
         return ResponseEntity.ok(service.buscarTodasEditoras(page, linesPerPage, direction, orderBy));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarLivro(@Valid @RequestBody LivroRequest request,
-                                                 @PathVariable Integer id){
-        service.atualizarLivro(request, id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<LivroResponse> atualizarLivro(
+            @Valid @RequestBody LivroRequest request,
+            @PathVariable Integer id){
+        LivroResponse livroResponse = service.atualizarLivro(request, id);
+        return ResponseEntity.ok(livroResponse);
     }
 
     @DeleteMapping("/{id}")
