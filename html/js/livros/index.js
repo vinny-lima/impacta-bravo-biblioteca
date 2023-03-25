@@ -180,8 +180,40 @@ function add_livro() {
             $('#template_livro form label.error').css('color', 'red');
         },
         submitHandler: function (form) {
-            console.log('enviando ajax')
-            //todo: continuar a partir daqui
+            console.log('Enviando requisição');
+            const dataVar = {
+                titulo   : $('#livro_titulo').val(),
+                subtitulo: $('#livro_subtitulo').val(),
+                descricao: $('#livro_descricao').val(),
+                paginas  : $('#livro_paginas').val(),
+                isbn     : $('#livro_isbn').val(),
+                unidades : $('#livro_unidades').val(),
+                editoraId: $('#livro_editora').val(),
+                autoresId: $('#livro_autores').val(),
+                generosId: $('#livro_generos').val()
+            }
+            console.log(dataVar);
+            $.ajax({
+                type       : 'POST',
+                cache      : false,
+                url        : rotas.livros,
+                dataType   : 'json',
+                contentType: 'application/json; charset=UTF-8',
+                data       : JSON.stringify(dataVar),
+                beforeSend : function () {
+                    console.log('Enviando requisição');
+                },
+                complete: function () {
+                    console.log('Envio concluído');
+                },
+                success: function (response, status) {
+                    console.log(`${response}\n${status}\n`);
+                },
+                error: function (response, status, error) {
+                    console.log(`${response}\n${status}\n${error}\n`);
+                    console.log(`${response?.responseJSON?.error}\n${response?.responseJSON?.message}\n${response?.responseJSON?.status}\n`);
+                }
+            });
 
             return false;
         }

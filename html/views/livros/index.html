@@ -54,7 +54,7 @@
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="livro_paginas" class="form-label">Nº Páginas</label>
-                <input type="number" min="1" class="form-control" id="livro_paginas" name="livro_paginas" value=""/>
+                <input type="number" step="1" min="1" class="form-control" id="livro_paginas" name="livro_paginas" value=""/>
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="livro_isbn" class="form-label">ISBN</label>
@@ -62,7 +62,7 @@
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="livro_unidades" class="form-label">Nº Unidades</label>
-                <input type="number" min="0" class="form-control" id="livro_unidades" name="livro_unidades" value=""/>
+                <input type="number" step="1" min="0" class="form-control" id="livro_unidades" name="livro_unidades" value=""/>
             </div>
             <div class="col-md-12 col-xs-12 mb-3">
                 <label for="livro_descricao" class="form-label">Descrição</label>
@@ -70,8 +70,9 @@
             </div>
 
             <footer class="text-end border-top pt-3">
-                <button id="voltar" class="btn btn-warning btn-sm">Voltar</button>
-                <button id="salvar" type="submit" class="btn btn-success btn-sm">Salvar</button>
+                <button type="reset" class="btn btn-danger btn-sm">Limpar</button>
+                <button type="button" id="voltar" class="btn btn-warning btn-sm">Voltar</button>
+                <button type="submit" id="salvar" class="btn btn-success btn-sm">Salvar</button>
             </footer>
         </div>
     </form>
