@@ -20,7 +20,7 @@ public class Livro {
     private Integer id;
     private String titulo;
     private String subtitulo;
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String descricao;
     private Integer paginas;
     private String isbn;
