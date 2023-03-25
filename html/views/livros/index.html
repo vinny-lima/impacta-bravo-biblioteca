@@ -41,16 +41,18 @@
                 <input type="text" class="form-control" id="livro_subtitulo" name="livro_subtitulo" value=""/>
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="livro_autores" class="form-label">Autores</label>
-                <input type="text" class="form-control" id="livro_autores" name="livro_autores" value=""/>
+                <label for="livro_autores" class="form-label">Autores (em breve)</label>
+                <select class="form-control" id="livro_autores" name="livro_autores"></select>
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="livro_generos" class="form-label">Gêneros</label>
-                <input type="text" class="form-control" id="livro_generos" name="livro_generos" value=""/>
+                <label for="livro_generos" class="form-label">Gêneros (em breve)</label>
+                <select class="form-control" id="livro_generos" name="livro_generos"></select>
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="livro_editora" class="form-label">Editora</label>
-                <input type="text" class="form-control" id="livro_editora" name="livro_editora" value=""/>
+                <select class="form-control" id="livro_editora" name="livro_editora">
+                    <option value=""></option>
+                </select>
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="livro_paginas" class="form-label">Nº Páginas</label>
@@ -70,7 +72,7 @@
             </div>
 
             <footer class="text-end border-top pt-3">
-                <button type="reset" class="btn btn-danger btn-sm">Limpar</button>
+                <button type="reset" id="limpar" class="btn btn-danger btn-sm">Limpar</button>
                 <button type="button" id="voltar" class="btn btn-warning btn-sm">Voltar</button>
                 <button type="submit" id="salvar" class="btn btn-success btn-sm">Salvar</button>
             </footer>

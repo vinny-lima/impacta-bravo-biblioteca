@@ -1,9 +1,8 @@
 /**
  * Conjunto de funções utilitárias para facilitar manipulações avançadas da interface
  */
-const MaskISBN = (val) => {
-    return val.replace(/\D/g, '').length == 13 ? '000-00-00-00000-0' : '00-000-0000-0###';
-}
+
+const MaskISBN = (val) => val.replace(/\D/g, '').length == 13 ? '000-00-00-00000-0' : '00-000-0000-0###';
 
 const MaskISBNOptions = {
     byPassKeys: [32],
@@ -12,15 +11,28 @@ const MaskISBNOptions = {
     }
 }
 
-const MaskTelefone = (val) => {
-    return val.replace(/\D/g, '').length === 11 ? '(00)00000-00009' : '(00)0000-000099';
-}
+// Cria validação de ISBN e adiciona ao plugin validator
+$.validator.addMethod('validaISBN', function (value, element) {
+    // Checa o tamanho do input sem máscara
+    if ($(element).cleanVal().length === 10 || $(element).cleanVal().length === 13) {
+        return true;
+    }
+    return false;
+}, 'ISBN inválido!');
+
+const MaskTelefone = (val) => val.replace(/\D/g, '').length === 11 ? '(00)00000-00009' : '(00)0000-000099';
 
 const MaskTelefoneOptions = {
     byPassKeys: [32],
     onKeyPress: function (val, e, field, options) {
         field.mask(MaskTelefone.apply({}, arguments), options);
     }
+}
+
+const resetarFormulario = (form) => {
+    $(form).validate().destroy();
+    $(form).find('select').val(null).trigger('change');
+    form.reset();
 }
 
 const pad = (num, size) => {
