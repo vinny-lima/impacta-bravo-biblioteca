@@ -14,7 +14,7 @@ public class LivroResponse {
     private String descricao;
     private Integer paginas;
     private String isbn;
-
+    private Integer quantidade;
     private Editora editora;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private LocalDate dataCriacao;
@@ -28,6 +28,7 @@ public class LivroResponse {
         this.descricao = livro.getDescricao();
         this.paginas = livro.getPaginas();
         this.isbn = livro.getIsbn();
+        this.quantidade = livro.getQuantidade();
         this.editora = livro.getEditora();
         this.dataCriacao = livro.getDataCriacao();
         this.dataAtualizacao = livro.getDataAtualizacao();
@@ -56,6 +57,8 @@ public class LivroResponse {
     public String getIsbn() {
         return isbn;
     }
+
+    public Integer getQuantidade() {return quantidade;}
 
     public Editora getEditora() {
         return editora;

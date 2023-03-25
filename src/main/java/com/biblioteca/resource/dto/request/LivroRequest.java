@@ -15,17 +15,21 @@ public class LivroRequest {
     private Integer paginas;
     @NotBlank(message = "Campo isbn é obrigatório")
     private String isbn;
+
+    @NotNull(message = "Campo quantidade é obrigatório")
+    private Integer quantidade;
     @NotNull(message = "Campo editoraId é obrigatório")
     private Integer editoraId;
 
     public LivroRequest(String titulo, String subtitulo, String descricao,
-                        Integer paginas, String isbn, Integer editoraId) {
+                        Integer paginas, String isbn, Integer quantidade,Integer editoraId) {
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.descricao = descricao;
         this.paginas = paginas;
         this.isbn = isbn;
         this.editoraId = editoraId;
+        this.quantidade = quantidade;
     }
 
     public String getTitulo() {
@@ -47,6 +51,8 @@ public class LivroRequest {
     public String getIsbn() {
         return isbn;
     }
+
+    public Integer getQuantidade() {return quantidade;}
 
     public Integer getEditoraId() {
         return editoraId;

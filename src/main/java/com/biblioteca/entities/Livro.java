@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
@@ -19,9 +20,11 @@ public class Livro {
     private Integer id;
     private String titulo;
     private String subtitulo;
+    @Lob
     private String descricao;
     private Integer paginas;
     private String isbn;
+    private Integer quantidade;
     @ManyToOne
     @JoinColumn(name = "editora_id")
     private Editora editora;
@@ -33,7 +36,7 @@ public class Livro {
     public Livro() {}
 
     public Livro(Integer id, String titulo, String subtitulo, String descricao,
-                 Integer paginas, String isbn, Editora editora) {
+                 Integer paginas, String isbn, Editora editora, Integer quantidade) {
         this.id = id;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
@@ -41,6 +44,7 @@ public class Livro {
         this.paginas = paginas;
         this.isbn = isbn;
         this.editora = editora;
+        this.quantidade = quantidade;
     }
 
     public Integer getId() {
@@ -91,6 +95,10 @@ public class Livro {
         this.isbn = isbn;
     }
 
+    public Integer getQuantidade() {return quantidade;}
+
+    public void setQuantidade(Integer quantidade) {this.quantidade = quantidade;}
+
     public Editora getEditora() {
         return editora;
     }
@@ -120,11 +128,13 @@ public class Livro {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Livro livro = (Livro) o;
-        return Objects.equals(id, livro.id) && Objects.equals(titulo, livro.titulo)
+        return Objects.equals(id, livro.id)
+                && Objects.equals(titulo, livro.titulo)
                 && Objects.equals(subtitulo, livro.subtitulo)
                 && Objects.equals(descricao, livro.descricao)
                 && Objects.equals(paginas, livro.paginas)
                 && Objects.equals(isbn, livro.isbn)
+                && Objects.equals(quantidade, livro.quantidade)
                 && Objects.equals(editora, livro.editora)
                 && Objects.equals(dataCriacao, livro.dataCriacao)
                 && Objects.equals(dataAtualizacao, livro.dataAtualizacao);
@@ -132,8 +142,8 @@ public class Livro {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titulo, subtitulo, descricao, paginas, isbn,
-                editora, dataCriacao, dataAtualizacao);
+        return Objects.hash(id, titulo, subtitulo, descricao, paginas,
+                isbn, quantidade, editora, dataCriacao, dataAtualizacao);
     }
 
     @Override
@@ -145,6 +155,7 @@ public class Livro {
                 ", descricao='" + descricao + '\'' +
                 ", paginas=" + paginas +
                 ", isbn='" + isbn + '\'' +
+                ", quantidade=" + quantidade +
                 ", editora=" + editora +
                 ", dataCriacao=" + dataCriacao +
                 ", dataAtualizacao=" + dataAtualizacao +

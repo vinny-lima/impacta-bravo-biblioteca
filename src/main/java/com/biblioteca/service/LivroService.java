@@ -111,7 +111,8 @@ public class LivroService {
                 dto.getDescricao(),
                 dto.getPaginas(),
                 dto.getIsbn(),
-                editora
+                editora,
+                dto.getQuantidade()
         );
     }
 
@@ -123,7 +124,8 @@ public class LivroService {
                 dto.getDescricao(),
                 dto.getPaginas(),
                 dto.getIsbn(),
-                editora
+                editora,
+                dto.getQuantidade()
         );
     }
 
