@@ -1,13 +1,17 @@
-// livros_get_all();
+dtListagemLivros();
 
-dtListagemLivros([]);
-/**
- * tabela para debug
- */
-function dtListagemLivros (linhas) {
+function dtListagemLivros () {
+    // Parametros default do getAll
+    const queryGetAll = [
+        {name: 'page', value: 0},
+        {name: 'linesPerPage', value: 10},
+        {name: 'direction', value: 'ASC'},
+        {name: 'orderBy', value: 'titulo'}
+    ];
     // Inicializa e configura a tabela
     window['dtLivros'] = $('#tb_livros').DataTable({
         initComplete: function () {
+            /* Eventos */
             // Template - Adicionar
             $('#listagem_livros').on('click', '#adicionar', function () {
                 gerenciar_template_livro();
@@ -28,37 +32,78 @@ function dtListagemLivros (linhas) {
                 $('#listagem_livros, #template_livro').toggleClass('d-none');
                 return false;
             });
+            /* Configurações gerais */
+            // Máscara ISBN
+            $('#livro_isbn').mask(MaskISBN, MaskISBNOptions);
+            // Validação ISBN
+            $.validator.addMethod('validaISBN', function (value, element) {
+                // Checa o tamanho do input sem máscara
+                if ($(element).cleanVal().length === 10 || $(element).cleanVal().length === 13) {
+                    return true;
+                }
+                return false;
+            }, 'ISBN inválido!');
         },
+        destroy       : true,
+        processing    : true,
+        serverSide    : true,
         scrollX       : true,
         autoWidth     : true,
         scrollY       : '55vh',
         scrollCollapse: true,
+        responsive    : true,
         paging        : true,
-        destroy       : true,
-        columnDefs    : [
+        ordering      : true,
+        searching     : false,
+        columns: [
+            {data: 'id'},
+            {data: 'titulo'},
+            {data: 'subtitulo'},
+            {data: 'subtitulo'}, // placeholder
+            {data: 'editora.nomeFantasia'},
+            {data: 'paginas'} // placeholder
+        ],
+        columnDefs: [
             {
                 targets: [0,5],
                 type: 'num'
             }
         ],
-        ordering: true,
-        order: [0, 'desc']
-    });
-    // Percorre e adiciona as linhas virtualmente
-    if (linhas.length) {
-        for (i = 0; i < linhas.length; i++) {
-            window['dtLivros'].row.add([
-                linhas[i].id,
-                linhas[i].titulo,
-                linhas[i].subtitulo,
-                linhas[i].autor,
-                linhas[i].editora,
-                linhas[i].unidades
-            ]);
+        ajaxSource: rotas.livros,
+        serverData: function (sSource, aoData, fnCallback) {
+            console.log(aoData)
+
+            // console.log(window['dtLivros'].order());
+
+            if (typeof window['dtLivros'] !== 'undefined' && window['dtLivros'].page() !== queryGetAll[0].value) {
+                queryGetAll[0].value = window['dtLivros'].page();
+            }
+            
+            if (typeof window['dtLivros'] !== 'undefined' && window['dtLivros'].page.len() !== queryGetAll[1].value) {
+                queryGetAll[1].value = window['dtLivros'].page.len();
+            }
+
+            queryGetAll.map(element => aoData.push(element));
+            
+            $.ajax({
+                type   : 'GET',
+                url    : sSource,
+                data   : aoData,
+                dataSrc: 'content',
+                success: function (sSource, aoData) {
+                    console.log(sSource);
+                    // Ajusta as propriedades para renderizar a tabela
+                    sSource.iTotalDisplayRecords = sSource.totalElements;
+                    sSource.iTotalRecords        = sSource.totalElements;
+                    sSource.aaData               = sSource.content;
+                    fnCallback(sSource, aoData);
+                },
+                error: function (response, status) {
+                    console.log(response);
+                }
+            });
         }
-    }
-    // Desenha as linhas
-    window['dtLivros'].draw();
+    });
 }
 
 function gerenciar_template_livro (acao = 'adicionar') {
@@ -77,21 +122,12 @@ function gerenciar_template_livro (acao = 'adicionar') {
             alert('Erro desconhecido.\nPor favor, recarregue a página e tente novamente.');
             return false;
     }
-    // Configuração de máscara
-    $('#livro_isbn').mask(MaskISBN, MaskISBNOptions);
 }
 
 function add_livro() {
     // Exibição
     $('#template_livro > header > label').text('Adicionar Livro');
-    // Adiciona validação de ISBN
-    $.validator.addMethod('validaISBN', function (value, element) {
-        // Checa o tamanho do input sem mascara
-        if ($(element).cleanVal().length === 10 || $(element).cleanVal().length === 13) {
-            return true;
-        }
-        return false;
-    }, 'ISBN inválido!');
+    
     // Inicia e configura validador do formulário
     $('#template_livro #form_livro').validate({
         debug: false,
