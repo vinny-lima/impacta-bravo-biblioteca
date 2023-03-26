@@ -38,10 +38,11 @@ public class LivroService {
     public LivroResponse salvar(LivroRequest dto){
         if (dto == null) throw new LivroNullException("LivroRequest dto é nulo.");
 
-        Optional<Livro> optionalLivro = buscarLivroPorEditora(dto.getTitulo(), dto.getEditoraId());
+        Optional<Livro> optionalLivro = buscarLivroPorEditora(dto.getIsbn(), dto.getEditoraId());
 
         if (optionalLivro.isPresent())
-            throw new LivroJaCadastradoException("Esse livro já está cadastrado.");
+            throw new LivroJaCadastradoException("Esse livro já está cadastrado com esse isbn: "
+            +dto.getIsbn()+ ", Para essa editora: " +optionalLivro.get().getEditora().getNomeFantasia());
 
         EditoraResponse editoraResponse = editoraService.buscarPorId(dto.getEditoraId());
         Editora editora = editoraService.editoraResponseToEditora(editoraResponse);
@@ -71,7 +72,7 @@ public class LivroService {
         EditoraResponse editoraResponse = editoraService.buscarPorId(resquest.getEditoraId());
         Editora editora = editoraService.editoraResponseToEditora(editoraResponse);
         Livro livroSalvo = livroResponseToLivro(livroResponseSalvo, editora);
-        BeanUtils.copyProperties(resquest, livroSalvo, "dataCriacao");
+        BeanUtils.copyProperties(resquest, livroSalvo, "dataCriacao", "isbn");
         livroSalvo.setId(id);
         livroSalvo.setDataCriacao(livroResponseSalvo.getDataCriacao());
         livroSalvo.setDataAtualizacao(LocalDate.now());
@@ -95,8 +96,8 @@ public class LivroService {
         return repository.findAll(pageRequest).map(LivroResponse::new);
     }
 
-    public Optional<Livro> buscarLivroPorEditora(String titulo, Integer editoraId){
-        return repository.findByTituloAndEditoraId(titulo, editoraId);
+    public Optional<Livro> buscarLivroPorEditora(String isbn, Integer editoraId){
+        return repository.findByIsbnAndEditoraId(isbn, editoraId);
     }
 
     public List<Livro> buscarLivrosPorEditoraId(Integer id){
