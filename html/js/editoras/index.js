@@ -108,7 +108,7 @@ function getEditora(id) {
             console.log(response);
 
             $('#editora_razaoSocial').val(response.razaoSocial);
-            $('#editora_NomeFantasia').val(response.NomeFantasia);
+            $('#editora_nomeFantasia').val(response.nomeFantasia);
             $('#editora_documento').val(response.documento);
             $('#editora_telefone').val(response.telefone);
             $('#editora_email').val(response.email);
