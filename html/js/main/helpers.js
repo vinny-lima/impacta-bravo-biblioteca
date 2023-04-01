@@ -80,3 +80,20 @@ const dataPt2Usa = (data, parte = '') => {
             return data_partes[2] + "-" + pad(data_partes[1], 2) + "-" + pad(data_partes[0], 2);
     }
 }
+
+function validarEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+}
+
+function buscarEndereco(cep) {
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("editora_logradouro").value = data.logradouro;
+        document.getElementById("editora_bairro").value = data.bairro;
+        document.getElementById("editora_municipio").value = data.localidade;
+        document.getElementById("editora_uf").value = data.uf;
+      })
+      .catch(error => console.error(error));
+  }

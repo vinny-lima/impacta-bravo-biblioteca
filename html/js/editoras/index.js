@@ -11,7 +11,7 @@ function getAllEditoras () {
     ];
     const mapOrder = [
         'id',
-        'editora',
+        'nomeFantasia',
         'documento',
         'telefone',
         'email'   
@@ -34,14 +34,14 @@ function getAllEditoras () {
         searching     : false,
         columns: [
             {data: 'id'},
-            {data: 'editora'},
+            {data: 'nomeFantasia'},
             {data: 'documento'},
             {data: 'telefone'},
             {data: 'email'},
         ],
         columnDefs: [
             {
-                targets: [0,5],
+                targets: [0],
                 type: 'num'
             }
         ],
@@ -162,6 +162,11 @@ function iniciarComportamentos() {
     // Salvar
     $('tb_editoras').on('click', '#salvar', 
     function () {
+        const email = document.getElementById("editora_email").name;
+        if (!validarEmail(email)) {
+            alert("Por favor, insira um endereço de email válido.");
+            return false; // impede o envio do formulário
+        }
         $(this).submit();
         return false;
     });
