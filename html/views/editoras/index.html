@@ -1,0 +1,92 @@
+<script defer src="js/editoras/index.js"></script>
+
+<section id="listagem_editoras" class="bg-light rounded p-3">
+    <header class="border-bottom pb-2">
+        <div class="text-end">
+            <button id="adicionar" 
+            class="btn btn-primary btn-sm">
+                Adicionar
+            </button>
+        </div>
+    </header>
+
+    <div class="p-3">
+        <table id="tb_editoras" 
+        class="table table-hover table-responsive w-100">
+            <thead>
+              <tr class="table-primary">
+                <th scope="col">#</th>
+                <th scope="col">Editora</th>
+                <th scope="col">documento</th>
+                <th scope="col">telefone</th>
+                <th scope="col">email</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<section id="template_editoras" class="bg-light rounded p-3 d-none">
+    <header class="border-bottom mb-3">
+        <label class="fs-2"></label>
+    </header>
+    <form role="form" id="form_editora">
+        <div class="row">
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_razaoSocial" class="form-label">Razão Social</label>
+                <input type="text" class="form-control" id="editora_razaoSocial" name="editora_razaoSocial" value=""/>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_NomeFantasia" class="form-label">Nome Fantasia</label>
+                <input type="text" class="form-control" id="editora_NomeFantasia" name="editora_NomeFantasia" value=""/>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_documento" class="form-label">Documento</label>
+                <select class="form-control" id="editora_documento" name="editora_documento"></select>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_telefone" class="form-label">Telefone</label>
+                <select class="form-control" id="editora_telefone" name="editora_telefone"></select>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_email" class="form-label">Email</label>
+                <textarea type="text" class="form-control" id="editora_email" name="editora_email" rows="5" value=""></textarea>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_logradouro" class="form-label">Logradouro</label>
+                <textarea type="text" class="form-control" id="editora_logradouro" name="editora_logradouro" rows="5" value=""></textarea>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_numero" class="form-label">Número</label>
+                <textarea type="text" class="form-control" id="editora_numero" name="editora_numero" rows="5" value=""></textarea>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_complemento" class="form-label">Complemento</label>
+                <textarea type="text" class="form-control" id="editora_complemento" name="editora_complemento" rows="5" value=""></textarea>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_bairro" class="form-label">bairro</label>
+                <textarea type="text" class="form-control" id="editora_bairro" name="editora_bairro" rows="5" value=""></textarea>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_municipio" class="form-label">municipio</label>
+                <textarea type="text" class="form-control" id="editora_municipio" name="editora_municipio" rows="5" value=""></textarea>
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="editora_uf" class="form-label">uf</label>
+                <textarea type="text" class="form-control" id="editora_uf" name="editora_uf" rows="5" value=""></textarea>
+            </div>
+
+            <footer class="text-end border-top pt-3">
+                <button type="reset" id="limpar" class="btn btn-danger btn-sm">Limpar</button>
+                <button type="button" id="voltar" class="btn btn-warning btn-sm">Voltar</button>
+                <button type="submit" id="salvar" class="btn btn-success btn-sm">Salvar</button>
+            </footer>
+        </div>
+    </form>
+</section>
+
