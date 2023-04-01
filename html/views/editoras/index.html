@@ -37,48 +37,138 @@
     <form role="form" id="form_editora">
         <div class="row">
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="editora_razaoSocial" class="form-label">Razão Social</label>
-                <input type="text" class="form-control" id="editora_razaoSocial" name="editora_razaoSocial" value=""/>
+                <label for="editora_razaoSocial" 
+                    class="form-label">Razão Social
+                </label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_razaoSocial" 
+                    name="editora_razaoSocial" 
+                    value=""
+                />
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="editora_nomeFantasia" class="form-label">Nome Fantasia</label>
-                <input type="text" class="form-control" id="editora_NomeFantasia" name="editora_NomeFantasia" value=""/>
+                <label for="editora_nomeFantasia" 
+                    class="form-label">
+                        Nome Fantasia
+                </label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_NomeFantasia" 
+                    name="editora_NomeFantasia" value=""
+                />
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="editora_documento" class="form-label">Documento</label>
-                <select class="form-control" id="editora_documento" name="editora_documento"></select>
+                <label for="editora_documento" 
+                       class="form-label">
+                    Documento
+                </label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_documento" 
+                    name="editora_documento"
+                />
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="editora_telefone" class="form-label">Telefone</label>
-                <select class="form-control" id="editora_telefone" name="editora_telefone"></select>
+                <label for="editora_telefone" 
+                       class="form-label">
+                    Telefone
+                </label>
+                <input 
+                    type="tel" 
+                    pattern="[0-10]{11}" required
+                    maxlength="11"
+                    class="form-control" 
+                    id="editora_telefone" 
+                    name="editora_telefone"
+                >
+                <small>Formato: (99)99999-9999</small><br><br>
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
-                <label for="editora_email" class="form-label">Email</label>
-                <textarea type="text" class="form-control" id="editora_email" name="editora_email" rows="5" value=""></textarea>
+                <label for="editora_email" 
+                       class="form-label">
+                    Email
+                </label>
+                <input 
+                    type="email" 
+                    class="form-control" 
+                    id="editora_email" 
+                    name="editora_email" 
+                    onblur="validarEmail(this.value)"
+                    required
+                />
+            </div>
+            <div class="col-md-3 col-xs-12 mb-3">
+                <label for="cep"
+                       class="form-label"
+                >   CEP
+                </label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_cep" 
+                    name="editora_cep" 
+                    onblur="buscarEndereco(this.value)"
+                >
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="editora_logradouro" class="form-label">Logradouro</label>
-                <textarea type="text" class="form-control" id="editora_logradouro" name="editora_logradouro" rows="5" value=""></textarea>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_logradouro" 
+                    name="editora_logradouro" 
+                    value=""
+                >
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="editora_numero" class="form-label">Número</label>
-                <textarea type="text" class="form-control" id="editora_numero" name="editora_numero" rows="5" value=""></textarea>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_numero" 
+                    name="editora_numero" 
+                    value=""
+                >
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="editora_complemento" class="form-label">Complemento</label>
-                <textarea type="text" class="form-control" id="editora_complemento" name="editora_complemento" rows="5" value=""></textarea>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_complemento" 
+                    name="editora_complemento" 
+                    value="">
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="editora_bairro" class="form-label">bairro</label>
-                <textarea type="text" class="form-control" id="editora_bairro" name="editora_bairro" rows="5" value=""></textarea>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_bairro" 
+                    name="editora_bairro" 
+                    value="">
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="editora_municipio" class="form-label">municipio</label>
-                <textarea type="text" class="form-control" id="editora_municipio" name="editora_municipio" rows="5" value=""></textarea>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_municipio" 
+                    name="editora_municipio"
+                    value="">
             </div>
             <div class="col-md-3 col-xs-12 mb-3">
                 <label for="editora_uf" class="form-label">uf</label>
-                <textarea type="text" class="form-control" id="editora_uf" name="editora_uf" rows="5" value=""></textarea>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="editora_uf" 
+                    name="editora_uf" 
+                    value="">
             </div>
 
             <footer class="text-end border-top pt-3">
