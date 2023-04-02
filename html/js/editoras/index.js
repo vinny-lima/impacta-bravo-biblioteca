@@ -11,7 +11,7 @@ function getAllEditoras () {
     ];
     const mapOrder = [
         'id',
-        'nomeFantasia',
+        'editora',
         'documento',
         'telefone',
         'email'   
@@ -118,6 +118,8 @@ function getEditora(id) {
             $('#editora_bairro').val(response.bairro);
             $('#editora_municipio').val(response.municipio);
             $('#editora_uf').val(response.uf);
+
+            $('#template_editoras #limpar, #salvar').data('id', response.id);
         },
         error: function (response, status) {
             console.log(response);
@@ -160,7 +162,7 @@ function iniciarComportamentos() {
         return false;
     });
     // Salvar
-    $('tb_editoras').on('click', '#salvar', 
+    $('#tb_editoras').on('click', '#salvar', 
     function () {
         const email = document.getElementById("editora_email").name;
         if (!validarEmail(email)) {
@@ -171,27 +173,27 @@ function iniciarComportamentos() {
         return false;
     });
     // Voltar para a lista
-    $('tb_editoras').on('click', '#voltar', 
-    function () {
-        $('#listagem_editoras, tb_editoras').toggleClass('d-none');
+    $('#template_editoras').on('click', '#voltar', function () {
+        $('#listagem_editoras, #template_editoras').toggleClass('d-none');
         resetarFormulario(document.getElementById('form_editora'));
         return false;
     });
+   
     // Comportamento do botão limpar/excluir
     $('#form_editora').on('click', '#limpar', 
-    function () {
-        switch ($(this).data('modo')) {
-            case 'limpar':
-                resetarFormulario(this.form);
-                break;
-            case 'excluir':
-                deleteEditora()
-                break;
-            default:
-                alert('Erro desconhecido.\nPor favor, recarregue a página e tente novamente.');
-        }
-        return false;
-    });
+        function () {
+            switch ($(this).data('modo')) {
+                case 'limpar':
+                    resetarFormulario(this.form);
+                    break;
+                case 'excluir':
+                    deleteEditora()
+                    break;
+                default:
+                    alert('Erro desconhecido.\nPor favor, recarregue a página e tente novamente.');
+            }
+            return false;
+        });
     /* Configurações gerais */
     // Máscara ISBN
     // Select inteligente
@@ -249,7 +251,7 @@ function addEditora() {
             editora_razaoSocial: {
                 required: true
             },
-            editora_NomeFantasia: {
+            editora_nomeFantasia: {
                 required: true
             },
             editora_documento: {
@@ -282,7 +284,7 @@ function addEditora() {
         },
         messages: {
             editora_razaoSocial   : msg_erro_geral,
-            editora_NomeFantasia  : msg_erro_geral,
+            editora_nomeFantasia  : msg_erro_geral,
             editora_documento     : msg_erro_geral,
             editora_telefone      : msg_erro_geral,
             editora_email         : msg_erro_geral,
@@ -302,7 +304,7 @@ function addEditora() {
             console.log('Enviando requisição');
             const dataVar = {
                 razaoSocial    : $('#editora_razaoSocial').val(),
-                nome           : $('#editora_NomeFantasia').val(),
+                nomeFantasia   : $('#editora_nomeFantasia').val(),
                 documento      : $('#editora_documento').val(),
                 telefone       : $('#editora_telefone').val(),
                 email          : $('#editora_email').val(),
@@ -377,7 +379,7 @@ function updateEditora() {
             editora_razaoSocial: {
                 required: true
             },
-            editora_NomeFantasia: {
+            editora_nomeFantasia: {
                 required: true
             },
             editora_documento: {
@@ -410,7 +412,7 @@ function updateEditora() {
         },
         messages: {
             editora_razaoSocial   : msg_erro_geral,
-            editora_NomeFantasia  : msg_erro_geral,
+            editora_nomeFantasia  : msg_erro_geral,
             editora_documento     : msg_erro_geral,
             editora_telefone      : msg_erro_geral,
             editora_email         : msg_erro_geral,
@@ -431,7 +433,7 @@ function updateEditora() {
             console.log('Enviando requisição');
             const dataVar = {
                 razaoSocial    : $('#editora_razaoSocial').val(),
-                nome           : $('#editora_NomeFantasia').val(),
+                nomeFantasia   : $('#editora_nomeFantasia').val(),
                 documento      : $('#editora_documento').val(),
                 telefone       : $('#editora_telefone').val(),
                 email          : $('#editora_email').val(),
