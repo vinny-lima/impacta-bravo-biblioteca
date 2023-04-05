@@ -94,6 +94,48 @@ function buscarEndereco(cep) {
         document.getElementById("editora_bairro").value = data.bairro;
         document.getElementById("editora_municipio").value = data.localidade;
         document.getElementById("editora_uf").value = data.uf;
+        console.log('cep ok')
       })
       .catch(error => console.error(error));
+  }
+
+  function validarTelefone() {
+    const telefone = document.getElementById('editora_telefone');
+
+    telefone.addEventListener('input', function (e) {
+        let valor = telefone.value;
+        valor = valor.replace(/\D/g, ""); // remove todos os caracteres que não são dígitos
+        valor = valor.replace(/^(\d{2})(\d)/g, "($1) $2"); // adiciona o parêntese e o espaço depois do DDD
+        valor = valor.replace(/(\d{4})(\d)/, "$1-$2"); // adiciona o hífen entre os dois últimos blocos de números
+        telefone.value = valor;
+        
+    });
+
+    
+  }
+
+  
+  function formatarCnpj() {
+    const cnpj = document.getElementById('editora_documento');
+    let valor = cnpj.value;
+    valor = valor.replace(/\D/g,''); // remove todos os caracteres que não são dígitos
+    valor = valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5"); // formata o valor com pontos, barra e traço
+    cnpj.value = valor;
+  }
+
+  function validarCnpj() {
+    const cnpj = document.getElementById('cnpj');
+    let valor = cnpj.value;
+    valor = valor.replace(/[^\d]+/g,''); // remove todos os caracteres que não são dígitos
+    if(valor.length !== 14) { // verifica se o CNPJ tem 14 dígitos
+      cnpj.setCustomValidity("CNPJ inválido");
+    } else {
+      let cnpjCalculado = calcularDigitoCnpj(valor);
+      if(valor !== cnpjCalculado) {
+        cnpj.setCustomValidity("CNPJ inválido");
+      } else {
+        cnpj.setCustomValidity("");
+      }
+    }
+   
   }
