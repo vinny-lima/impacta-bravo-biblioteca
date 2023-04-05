@@ -1,5 +1,5 @@
 getAllEditoras();
-// getOptionsEditoras();
+
 
 function getAllEditoras () {
     
@@ -127,24 +127,6 @@ function getEditora(id) {
     });
 }
 
-// function getOptionsEditoras() {
-//     $.ajax({
-//         type   : 'GET',
-//         url    : rotas.editoras,
-//         success: function (response, status) {
-//             // console.log(response);
-//             if (response?.content?.length) {
-//                 $('#livro_editora').append(
-//                     response.content.map(element => new Option(element.nomeFantasia, element.id, false, false))
-//                 ).trigger('change');
-//             }
-//         },
-//         error: function (response, status) {
-//             console.log(response);
-//         }
-//     });
-// }
-
 function iniciarComportamentos() {
     /* Eventos */
     // Template - Adicionar
@@ -194,20 +176,6 @@ function iniciarComportamentos() {
             }
             return false;
         });
-    /* Configurações gerais */
-    // Máscara ISBN
-    // Select inteligente
-    // $('#form_editora #livro_editora').select2({
-    //     placeholder: 'Selecione',
-    //     width      : '100%',
-    //     allowClear : true
-    // });
-    // $('#form_editora #livro_autores, #livro_generos').select2({
-    //     placeholder: 'Selecione',
-    //     width      : '100%',
-    //     allowClear : true,
-    //     multiple   : true
-    // });
 }
 
 
@@ -355,9 +323,9 @@ function deleteEditora() {
         type   : 'DELETE',
         url    : `${rotas.editoras}/${$('#template_editoras #limpar').data('id')}`,
         success: function (response, status) {
-            window['dtEditoras'].ajax.reload();
+            window['dtEditora'].ajax.reload();
             $('#form_editora footer #voltar').click();
-            resetarFormulario(document.getElementById('form_editora'));
+            resetarFormulario(document.getElementById('form_livro'));
         },
         error: function (response, status) {
             console.log(response);
