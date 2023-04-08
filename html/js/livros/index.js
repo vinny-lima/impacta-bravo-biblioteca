@@ -1,5 +1,6 @@
 getAllLivros();
 getOptionsEditoras();
+getOptionsAutores();
 
 function getAllLivros () {
     // Parametros default do getAll
@@ -37,7 +38,7 @@ function getAllLivros () {
             {data: 'id'},
             {data: 'titulo'},
             {data: 'subtitulo'},
-            {data: 'autor'},
+            {data: 'autores.0.nomeFantasia'},
             {data: 'editora.nomeFantasia'},
             {data: 'quantidade'}
         ],
@@ -82,8 +83,7 @@ function getAllLivros () {
                     console.log(sSource);
                     // Transforma os IDs em ancoras
                     sSource.content.map(element => {
-                        element.id    = `<a class="text-decoration-none" name="atualizar_cadastro" href="${element.id}"><i class="fa-regular fa-hand-point-right"></i> ${element.id}</a>`;
-                        element.autor = 'em breve';
+                        element.id = `<a class="text-decoration-none" name="atualizar_cadastro" href="${element.id}"><i class="fa-regular fa-hand-point-right"></i> ${element.id}</a>`;
                     });
 
                     // Ajusta as propriedades para renderizar a tabela
@@ -114,7 +114,7 @@ function getLivro(id) {
             $('#livro_isbn').val(response.isbn);
             $('#livro_unidades').val(response.quantidade);
             $('#livro_editora').val(response.editora.id).trigger('change');
-            // $('#livro_autores').val(response);
+            $('#livro_autores').val(response.autores.map(index => index.id)).trigger('change');
             // $('#livro_generos').val(response);
             $('#template_livro #limpar, #salvar').data('id', response.id);
         },
@@ -132,6 +132,24 @@ function getOptionsEditoras() {
             // console.log(response);
             if (response?.content?.length) {
                 $('#livro_editora').append(
+                    response.content.map(element => new Option(element.nomeFantasia, element.id, false, false))
+                ).trigger('change');
+            }
+        },
+        error: function (response, status) {
+            console.log(response);
+        }
+    });
+}
+
+function getOptionsAutores() {
+    $.ajax({
+        type   : 'GET',
+        url    : rotas.autores,
+        success: function (response, status) {
+            // console.log(response);
+            if (response?.content?.length) {
+                $('#livro_autores').append(
                     response.content.map(element => new Option(element.nomeFantasia, element.id, false, false))
                 ).trigger('change');
             }
@@ -243,7 +261,7 @@ function addLivro() {
                 required: true
             },
             livro_autores: {
-                required: false // será required quando o cadastro for implementado
+                required: true
             },
             livro_generos: {
                 required: false // será required quando o cadastro for implementado
@@ -349,7 +367,7 @@ function updateLivro() {
                 required: true
             },
             livro_autores: {
-                required: false // será required quando o cadastro for implementado
+                required: true
             },
             livro_generos: {
                 required: false // será required quando o cadastro for implementado
