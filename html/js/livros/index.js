@@ -248,7 +248,7 @@ function addLivro() {
         $('#template_livro #limpar').removeData('id');
     }
 
-    $('#livro_isbn').prop('readonly', false);
+    $('#livro_isbn, #livro_autores').prop('disabled', false);
     
     // Inicia e configura validador do formulário
     $('#template_livro #form_livro').validate({
@@ -354,7 +354,7 @@ function updateLivro() {
     $('#template_livro #salvar').text('Atualizar');
     // Gerencia atributos do botão de limpar/excluir
     $('#template_livro #limpar').text('Excluir').data('modo', 'excluir');
-    $('#livro_isbn').prop('readonly', true);
+    $('#livro_isbn, #livro_autores').prop('disabled', true);
 
     // Inicia e configura validador do formulário
     $('#template_livro #form_livro').validate({
