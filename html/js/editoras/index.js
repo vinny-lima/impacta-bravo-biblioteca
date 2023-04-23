@@ -11,7 +11,7 @@ function getAllEditoras () {
     ];
     const mapOrder = [
         'id',
-        'editora',
+        'nomeFantasia',
         'documento',
         'telefone',
         'email'   
@@ -118,6 +118,7 @@ function getEditora(id) {
             $('#editora_bairro').val(response.bairro);
             $('#editora_municipio').val(response.municipio);
             $('#editora_uf').val(response.uf);
+            $('#editora_cep').val(response.cep);
 
             $('#template_editoras #limpar, #salvar').data('id', response.id);
         },
@@ -238,7 +239,7 @@ function addEditora() {
                 required: true,
             },
             editora_complemento: {
-                required: true
+                required: false
             },
             editora_bairro: {
                 required: true
@@ -248,20 +249,23 @@ function addEditora() {
             },
             editora_uf: {
                 required: true
+            },
+            editora_cep: {
+                required: true
             }
         },
         messages: {
-            editora_razaoSocial   : msg_erro_geral,
-            editora_nomeFantasia  : msg_erro_geral,
-            editora_documento     : msg_erro_geral,
-            editora_telefone      : msg_erro_geral,
-            editora_email         : msg_erro_geral,
-            editora_logradouro    : msg_erro_geral,
-            editora_numero        : msg_erro_geral,
-            leditora_complemento  : msg_erro_geral,
-            editora_bairro        : msg_erro_geral,
-            editora_municipio     : msg_erro_geral,
-            editora_uf            : msg_erro_geral
+            editora_razaoSocial : msg_erro_geral,
+            editora_nomeFantasia: msg_erro_geral,
+            editora_documento   : msg_erro_geral,
+            editora_telefone    : msg_erro_geral,
+            editora_email       : msg_erro_geral,
+            editora_logradouro  : msg_erro_geral,
+            editora_numero      : msg_erro_geral,
+            editora_bairro      : msg_erro_geral,
+            editora_municipio   : msg_erro_geral,
+            editora_uf          : msg_erro_geral,
+            editora_cep         : msg_erro_geral
         },
         errorPlacement: function (error, element) {
             // console.log(error);
@@ -271,17 +275,18 @@ function addEditora() {
         submitHandler: function (form) {
             console.log('Enviando requisição');
             const dataVar = {
-                razaoSocial    : $('#editora_razaoSocial').val(),
-                nomeFantasia   : $('#editora_nomeFantasia').val(),
-                documento      : $('#editora_documento').val(),
-                telefone       : $('#editora_telefone').val(),
-                email          : $('#editora_email').val(),
-                logradouro     : $('#editora_logradouro').val(),
-                numero         : $('#editora_numero').val(),
-                complemento    : $('#editora_complemento').val(),
-                bairro         : $('#editora_bairro').val(),
-                municipio      : $('#editora_municipio').val(),
-                uf             : $('#editora_uf').val(),
+                razaoSocial : $('#editora_razaoSocial').val(),
+                nomeFantasia: $('#editora_nomeFantasia').val(),
+                documento   : $('#editora_documento').val(),
+                telefone    : $('#editora_telefone').val(),
+                email       : $('#editora_email').val(),
+                logradouro  : $('#editora_logradouro').val(),
+                numero      : $('#editora_numero').val(),
+                complemento : $('#editora_complemento').val(),
+                bairro      : $('#editora_bairro').val(),
+                municipio   : $('#editora_municipio').val(),
+                uf          : $('#editora_uf').val(),
+                cep         : $('#editora_cep').val()
             }
             console.log(dataVar);
             $.ajax({
@@ -325,7 +330,7 @@ function deleteEditora() {
         success: function (response, status) {
             window['dtEditora'].ajax.reload();
             $('#form_editora footer #voltar').click();
-            resetarFormulario(document.getElementById('form_livro'));
+            resetarFormulario(document.getElementById('form_editora'));
         },
         error: function (response, status) {
             console.log(response);
@@ -366,7 +371,7 @@ function updateEditora() {
                 required: true,
             },
             editora_complemento: {
-                required: true
+                required: false
             },
             editora_bairro: {
                 required: true
@@ -376,20 +381,23 @@ function updateEditora() {
             },
             editora_uf: {
                 required: true
+            },
+            editora_cep: {
+                required: true
             }
         },
         messages: {
-            editora_razaoSocial   : msg_erro_geral,
-            editora_nomeFantasia  : msg_erro_geral,
-            editora_documento     : msg_erro_geral,
-            editora_telefone      : msg_erro_geral,
-            editora_email         : msg_erro_geral,
-            editora_logradouro    : msg_erro_geral,
-            editora_numero        : msg_erro_geral,
-            leditora_complemento  : msg_erro_geral,
-            editora_bairro        : msg_erro_geral,
-            editora_municipio     : msg_erro_geral,
-            editora_uf            : msg_erro_geral
+            editora_razaoSocial : msg_erro_geral,
+            editora_nomeFantasia: msg_erro_geral,
+            editora_documento   : msg_erro_geral,
+            editora_telefone    : msg_erro_geral,
+            editora_email       : msg_erro_geral,
+            editora_logradouro  : msg_erro_geral,
+            editora_numero      : msg_erro_geral,
+            editora_bairro      : msg_erro_geral,
+            editora_municipio   : msg_erro_geral,
+            editora_uf          : msg_erro_geral,
+            editora_cep         : msg_erro_geral
         },
         errorPlacement: function (error, element) {
             // console.log(error);
@@ -400,17 +408,18 @@ function updateEditora() {
         submitHandler: function (form) {
             console.log('Enviando requisição');
             const dataVar = {
-                razaoSocial    : $('#editora_razaoSocial').val(),
-                nomeFantasia   : $('#editora_nomeFantasia').val(),
-                documento      : $('#editora_documento').val(),
-                telefone       : $('#editora_telefone').val(),
-                email          : $('#editora_email').val(),
-                logradouro     : $('#editora_logradouro').val(),
-                numero         : $('#editora_numero').val(),
-                complemento    : $('#editora_complemento').val(),
-                bairro         : $('#editora_bairro').val(),
-                municipio      : $('#editora_municipio').val(),
-                uf             : $('#editora_uf').val(),
+                razaoSocial : $('#editora_razaoSocial').val(),
+                nomeFantasia: $('#editora_nomeFantasia').val(),
+                documento   : $('#editora_documento').val(),
+                telefone    : $('#editora_telefone').val(),
+                email       : $('#editora_email').val(),
+                logradouro  : $('#editora_logradouro').val(),
+                numero      : $('#editora_numero').val(),
+                complemento : $('#editora_complemento').val(),
+                bairro      : $('#editora_bairro').val(),
+                municipio   : $('#editora_municipio').val(),
+                uf          : $('#editora_uf').val(),
+                cep         : $('#editora_cep').val()
             }
             console.log(dataVar);
             $.ajax({
