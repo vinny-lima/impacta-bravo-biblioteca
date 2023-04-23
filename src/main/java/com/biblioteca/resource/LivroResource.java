@@ -52,7 +52,7 @@ public class LivroResource {
             @RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC")String direction,
             @RequestParam(value = "orderBy", defaultValue = "isbn")String orderBy){
-        return ResponseEntity.ok(service.buscarTodasEditoras(page, linesPerPage, direction, orderBy));
+        return ResponseEntity.ok(service.buscarTodosLivrosPaginado(page, linesPerPage, direction, orderBy));
     }
 
     @PutMapping("/{id}")

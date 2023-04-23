@@ -32,6 +32,7 @@ public class Editora {
     private LocalDate dataCriacao;
     @Column(name = "data_atualizacao")
     private LocalDate dataAtualizacao;
+    private String cep;
 
     public Editora() {}
 
@@ -39,7 +40,7 @@ public class Editora {
                    String documento, String telefone, String email,
                    String logradouro, Integer numero, String complemento,
                    String bairro, String municipio, String uf,
-                   LocalDate dataCriacao, LocalDate dataAtualizacao) {
+                   LocalDate dataCriacao, LocalDate dataAtualizacao, String cep) {
         this.id = id;
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
@@ -54,6 +55,7 @@ public class Editora {
         this.uf = uf;
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
+        this.cep = cep;
     }
 
     public Integer getId() {
@@ -68,17 +70,13 @@ public class Editora {
         return razaoSocial;
     }
 
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
-    }
+    public void setRazaoSocial(String razaoSocial) {this.razaoSocial = razaoSocial;}
 
     public String getNomeFantasia() {
         return nomeFantasia;
     }
 
-    public void setNomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
-    }
+    public void setNomeFantasia(String nomeFantasia) {this.nomeFantasia = nomeFantasia;}
 
     public String getDocumento() {
         return documento;
@@ -168,6 +166,10 @@ public class Editora {
         this.dataAtualizacao = dataAtualizacao;
     }
 
+    public String getCep() {return cep;}
+
+    public void setCep(String cep) {this.cep = cep;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -186,13 +188,15 @@ public class Editora {
                 && Objects.equals(municipio, editora.municipio)
                 && Objects.equals(uf, editora.uf)
                 && Objects.equals(dataCriacao, editora.dataCriacao)
-                && Objects.equals(dataAtualizacao, editora.dataAtualizacao);
+                && Objects.equals(dataAtualizacao, editora.dataAtualizacao)
+                && Objects.equals(cep, editora.cep);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, razaoSocial, nomeFantasia, documento, telefone, email,
-                logradouro, numero, complemento, bairro, municipio, uf, dataCriacao, dataAtualizacao);
+                logradouro, numero, complemento, bairro, municipio, uf, dataCriacao,
+                dataAtualizacao,cep);
     }
 
     @Override
@@ -212,6 +216,7 @@ public class Editora {
                 ", uf='" + uf + '\'' +
                 ", dataCriacao=" + dataCriacao +
                 ", dataAtualizacao=" + dataAtualizacao +
+                ", cep='" + cep + '\'' +
                 '}';
     }
 }

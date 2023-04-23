@@ -4,11 +4,18 @@ import com.biblioteca.entities.Editora;
 import com.biblioteca.entities.Livro;
 import com.biblioteca.repository.LivroRepository;
 import com.biblioteca.resource.dto.request.LivroRequest;
+import com.biblioteca.resource.dto.response.AutorResponse;
 import com.biblioteca.resource.dto.response.EditoraResponse;
 import com.biblioteca.resource.dto.response.LivroResponse;
+import com.biblioteca.service.exceptions.AutorNaoEncontradoException;
+import com.biblioteca.service.exceptions.AutorNullException;
+import com.biblioteca.service.exceptions.EditoraNaoEncontradaException;
+import com.biblioteca.service.exceptions.EditoraNullException;
 import com.biblioteca.service.exceptions.LivroJaCadastradoException;
 import com.biblioteca.service.exceptions.LivroNaoEncontradoException;
 import com.biblioteca.service.exceptions.LivroNullException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,21 +28,35 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.biblioteca.entities.Autor.toListaAutor;
+import static com.biblioteca.resource.dto.response.AutorResponse.toListaAutorResponse;
+
 @Service
 public class LivroService {
 
     private final LivroRepository repository;
-
     private final EditoraService editoraService;
+    private final AutorService autorService;
+    private final Logger LOG = LoggerFactory.getLogger(LivroService.class);
 
     @Autowired
-    public LivroService(LivroRepository repository, EditoraService editoraService) {
+    public LivroService(LivroRepository repository, EditoraService editoraService, AutorService autorService) {
         this.repository = repository;
         this.editoraService = editoraService;
+        this.autorService = autorService;
     }
 
-    @Transactional(rollbackForClassName = {"LivroNullException", "LivroJaCadastradoException"})
+    @Transactional(
+            rollbackFor = {
+                    LivroNullException.class,
+                    LivroJaCadastradoException.class,
+                    AutorNullException.class,
+                    AutorNaoEncontradoException.class,
+                    EditoraNullException.class,
+                    EditoraNaoEncontradaException.class
+            })
     public LivroResponse salvar(LivroRequest dto){
+        LOG.info("LivroService - salvar");
         if (dto == null) throw new LivroNullException("LivroRequest dto é nulo.");
 
         Optional<Livro> optionalLivro = buscarLivroPorEditora(dto.getIsbn(), dto.getEditoraId());
@@ -44,55 +65,92 @@ public class LivroService {
             throw new LivroJaCadastradoException("Esse livro já está cadastrado com esse isbn: "
             +dto.getIsbn()+ ", Para essa editora: " +optionalLivro.get().getEditora().getNomeFantasia());
 
-        EditoraResponse editoraResponse = editoraService.buscarPorId(dto.getEditoraId());
-        Editora editora = editoraService.editoraResponseToEditora(editoraResponse);
+        try {
+            LOG.info("Buscando editora por id e adicionando editora ao livro");
+            EditoraResponse editoraResponse = editoraService.buscarPorId(dto.getEditoraId());
+            Editora editora = editoraService.editoraResponseToEditora(editoraResponse);
 
-        Livro livro = livroRequestToLivro(dto, editora);
-        livro.setDataCriacao(LocalDate.now());
-        livro.setDataAtualizacao(LocalDate.now());
+            Livro livro = livroRequestToLivro(dto, editora);
+            livro.setDataCriacao(LocalDate.now());
+            livro.setDataAtualizacao(LocalDate.now());
 
-        return new LivroResponse(repository.save(livro));
+            LOG.info("Buscando autores por ids e adicionando autores ao livro");
+            List<AutorResponse> autorResponse = autorService.buscarAutoresPorListaIds(dto.getAutoresId());
+            livro.adicionarAutores(autorService.listAutorResponseToAutor(autorResponse));
+
+            return new LivroResponse(repository.save(livro));
+        } catch (Exception ex){
+            LOG.error("LivroService - salvar");
+            LOG.error("Erro ao salvar livro: {}", dto);
+            LOG.error("Exception: {}, mensagem: {}, cause: {}", ex.getClass().getName(), ex.getMessage(), ex.getCause());
+            throw ex;
+        }
     }
 
     public LivroResponse buscarPorId(Integer id){
-
+        LOG.info("LivroService - buscarPorId");
         if (id == null) throw new LivroNullException("Id nulo para buscar livro por id.");
 
         Optional<Livro> optionalLivro = repository.findById(id);
 
         if (optionalLivro.isEmpty()) throw new LivroNaoEncontradoException("Livro não encontrada com id: "+id);
 
+        LOG.info("Buscando livro por id: {}", id);
         return new LivroResponse(optionalLivro.get());
     }
 
-    @Transactional(rollbackForClassName = {"LivroNaoEncontradoException", "LivroNullException"})
+    @Transactional(rollbackFor = {LivroNaoEncontradoException.class, LivroNullException.class})
     public LivroResponse atualizarLivro(LivroRequest resquest, Integer id){
+        LOG.info("LivroService - atualizarLivro");
 
         LivroResponse livroResponseSalvo = buscarPorId(id);
+
+        LOG.info("Buscando editora por id e adicionando editora ao livro");
         EditoraResponse editoraResponse = editoraService.buscarPorId(resquest.getEditoraId());
         Editora editora = editoraService.editoraResponseToEditora(editoraResponse);
+
+        LOG.info("Atualizando livro com id: {}", id);
         Livro livroSalvo = livroResponseToLivro(livroResponseSalvo, editora);
+
+        //adiconando os autores no livro
+        livroSalvo.adicionarAutores(toListaAutor(livroResponseSalvo.getAutores()));
+
         BeanUtils.copyProperties(resquest, livroSalvo, "dataCriacao", "isbn");
+
         livroSalvo.setId(id);
         livroSalvo.setDataCriacao(livroResponseSalvo.getDataCriacao());
         livroSalvo.setDataAtualizacao(LocalDate.now());
+
         Livro livro = repository.save(livroSalvo);
+
+        livro.adicionarAutores(livroSalvo.getAutores());
+
         return livroToLivroResponse(livro, editora);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {
+            LivroNaoEncontradoException.class,
+            LivroNullException.class
+    })
     public void apagarLivro(Integer id){
-        LivroResponse editoraResponse = buscarPorId(id);
-        List<Livro> livros = repository.findByEditoraId(id);
+        LOG.info("LivroService - apagarLivro");
 
-        //add verificação se o livroId esta na tabela livros_autores
+        LivroResponse livroResponseSalvo = buscarPorId(id);
+        Livro livroSalvo = livroResponseToLivro(livroResponseSalvo, livroResponseSalvo.getEditora());
 
-        repository.deleteById(id);
+        LOG.info("Removendo autores para apagar livro");
+        livroSalvo.removerAutores();
+
+        LOG.info("Apagando livro com id: {}", id);
+        repository.delete(livroSalvo);
     }
 
-    public Page<LivroResponse> buscarTodasEditoras(Integer page, Integer linesPerPage,
-                                                     String direction, String orderBy) {
+    public Page<LivroResponse> buscarTodosLivrosPaginado(Integer page, Integer linesPerPage,
+                                                         String direction, String orderBy) {
+        LOG.info("LivroService - buscarTodosLivrosPaginado");
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+
+        LOG.info("Buscando todos livros paginando");
         return repository.findAll(pageRequest).map(LivroResponse::new);
     }
 

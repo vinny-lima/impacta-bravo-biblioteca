@@ -6,31 +6,34 @@ import jakarta.validation.constraints.NotNull;
 public class EditoraRequest {
 
     @NotBlank(message = "Campo razao social é obrigatório")
-    private String razaoSocial;
+    private final String razaoSocial;
     @NotBlank(message = "Campo nome fantasia é obrigatório")
-    private String nomeFantasia;
+    private final String nomeFantasia;
     @NotBlank(message = "Campo documento é obrigatório")
-    private String documento;
+    private final String documento;
     @NotBlank(message = "Campo telefone é obrigatório")
-    private String telefone;
+    private final String telefone;
     @NotBlank(message = "Campo email é obrigatório")
-    private String email;
+    private final String email;
     @NotBlank(message = "Campo logradouro é obrigatório")
-    private String logradouro;
+    private final String logradouro;
     @NotNull(message = "Campo numero é obrigatório")
-    private Integer numero;
+    private final Integer numero;
     @NotBlank(message = "Campo complemento é obrigatório")
-    private String complemento;
+    private final String complemento;
     @NotBlank(message = "Campo bairro é obrigatório")
-    private String bairro;
+    private final String bairro;
     @NotBlank(message = "Campo municipio é obrigatório")
-    private String municipio;
+    private final String municipio;
     @NotBlank(message = "Campo uf é obrigatório")
-    private String uf;
+    private final String uf;
+    @NotBlank(message = "Campo cep é obrigatório")
+    private final String cep;
 
-    public EditoraRequest(String razaoSocial, String nomeFantasia, String documento,
-                          String telefone, String email, String logradouro, Integer numero,
-                          String complemento, String bairro, String municipio, String uf) {
+    public EditoraRequest(String razaoSocial, String nomeFantasia,
+                          String documento, String telefone, String email,
+                          String logradouro, Integer numero, String complemento,
+                          String bairro, String municipio, String uf, String cep) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
         this.documento = documento;
@@ -42,6 +45,7 @@ public class EditoraRequest {
         this.bairro = bairro;
         this.municipio = municipio;
         this.uf = uf;
+        this.cep = cep;
     }
 
     public String getRazaoSocial() {
@@ -86,5 +90,25 @@ public class EditoraRequest {
 
     public String getUf() {
         return uf;
+    }
+
+    public String getCep() {return cep;}
+
+    @Override
+    public String toString() {
+        return "EditoraRequest{" +
+                "razaoSocial='" + razaoSocial + '\'' +
+                ", nomeFantasia='" + nomeFantasia + '\'' +
+                ", documento='" + documento + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                ", logradouro='" + logradouro + '\'' +
+                ", numero=" + numero +
+                ", complemento='" + complemento + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", municipio='" + municipio + '\'' +
+                ", uf='" + uf + '\'' +
+                ", cep='" + cep + '\'' +
+                '}';
     }
 }

@@ -50,7 +50,7 @@ public class EditoraResource {
             @RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC")String direction,
             @RequestParam(value = "orderBy", defaultValue = "nomeFantasia")String orderBy){
-        return ResponseEntity.ok(service.buscarTodasEditoras(page, linesPerPage, direction, orderBy));
+        return ResponseEntity.ok(service.buscarTodasEditorasPaginada(page, linesPerPage, direction, orderBy));
     }
 
     @PutMapping("/{id}")

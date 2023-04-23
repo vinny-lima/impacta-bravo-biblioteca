@@ -1,15 +1,20 @@
 package com.biblioteca.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -32,6 +37,14 @@ public class Livro {
     private LocalDate dataCriacao;
     @Column(name = "data_atualizacao")
     private LocalDate dataAtualizacao;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "livros_autores",
+            joinColumns = @JoinColumn(name = "id_livro", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_autor", referencedColumnName = "id")
+    )
+    private List<Autor> autores;
 
     public Livro() {}
 
@@ -121,6 +134,43 @@ public class Livro {
 
     public void setDataAtualizacao(LocalDate dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public List<Autor> getAutores() {
+        if (autores == null) autores = new ArrayList<>();
+        return autores;
+    }
+
+    public void setAutores(List<Autor> autores) {this.autores = autores;}
+
+    public void adicionarAutores(List<Autor> listAutores){
+        if (listAutores != null){
+            for (Autor autor : listAutores){
+                adicionarAutor(autor);
+            }
+        }
+    }
+
+    private void adicionarAutor(Autor autor){
+        if (autor != null && !getAutores().contains(autor)){
+            getAutores().add(autor);
+            if (!autor.getLivros().contains(this)) autor.getLivros().add(this);
+        }
+    }
+
+    public void removerAutores(){
+        if (!getAutores().isEmpty()){
+            for (Autor autor : getAutores()){
+                removerAutor(autor);
+            }
+        }
+    }
+
+    private void removerAutor(Autor autor){
+        if (autor != null && getAutores().contains(autor)){
+            getAutores().remove(autor);
+            if (autor.getLivros().contains(this)) autor.getLivros().remove(this);
+        }
     }
 
     @Override

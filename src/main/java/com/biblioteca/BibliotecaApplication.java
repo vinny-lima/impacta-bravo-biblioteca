@@ -1,7 +1,6 @@
 package com.biblioteca;
 
 import com.biblioteca.config.PopularDB;
-import com.biblioteca.service.EditoraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BibliotecaApplication implements CommandLineRunner {
 
     @Autowired
-    private EditoraService editoraService;
+    private PopularDB popularDB;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BibliotecaApplication.class, args);
@@ -19,6 +18,7 @@ public class BibliotecaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        new PopularDB(editoraService).salvarEditora();
+        popularDB.salvarEditora();
+        popularDB.salvarAutores();
     }
 }

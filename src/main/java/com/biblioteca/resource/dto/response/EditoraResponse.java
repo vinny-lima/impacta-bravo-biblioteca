@@ -6,23 +6,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 
 public class EditoraResponse {
+    private final Integer id;
+    private final String razaoSocial;
+    private final String nomeFantasia;
+    private final String documento;
+    private final String telefone;
+    private final String email;
+    private final String logradouro;
+    private final Integer numero;
+    private final String complemento;
+    private final String bairro;
+    private final String municipio;
+    private final String uf;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+    private final LocalDate dataCriacao;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+    private final LocalDate dataAtualizacao;
 
-    private Integer id;
-    private String razaoSocial;
-    private String nomeFantasia;
-    private String documento;
-    private String telefone;
-    private String email;
-    private String logradouro;
-    private Integer numero;
-    private String complemento;
-    private String bairro;
-    private String municipio;
-    private String uf;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private LocalDate dataCriacao;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private LocalDate dataAtualizacao;
+    private final String cep;
 
     public EditoraResponse(Editora editora) {
         this.id = editora.getId();
@@ -39,6 +40,7 @@ public class EditoraResponse {
         this.uf = editora.getUf();
         this.dataCriacao = editora.getDataCriacao();
         this.dataAtualizacao = editora.getDataAtualizacao();
+        this.cep = editora.getCep();
     }
 
     public Integer getId() {
@@ -96,4 +98,6 @@ public class EditoraResponse {
     public LocalDate getDataAtualizacao() {
         return dataAtualizacao;
     }
+
+    public String getCep() {return cep;}
 }

@@ -5,21 +5,26 @@ import com.biblioteca.entities.Livro;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import static com.biblioteca.resource.dto.response.AutorResponse.toListaAutorResponse;
 
 public class LivroResponse {
 
-    private Integer id;
-    private String titulo;
-    private String subtitulo;
-    private String descricao;
-    private Integer paginas;
-    private String isbn;
-    private Integer quantidade;
-    private Editora editora;
+    private final Integer id;
+    private final String titulo;
+    private final String subtitulo;
+    private final String descricao;
+    private final Integer paginas;
+    private final String isbn;
+    private final Integer quantidade;
+    private final Editora editora;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private LocalDate dataCriacao;
+    private final LocalDate dataCriacao;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private LocalDate dataAtualizacao;
+    private final LocalDate dataAtualizacao;
+
+    private final List<AutorResponse> autores;
 
     public LivroResponse(Livro livro) {
         this.id = livro.getId();
@@ -29,9 +34,10 @@ public class LivroResponse {
         this.paginas = livro.getPaginas();
         this.isbn = livro.getIsbn();
         this.quantidade = livro.getQuantidade();
-        this.editora = livro.getEditora();
         this.dataCriacao = livro.getDataCriacao();
         this.dataAtualizacao = livro.getDataAtualizacao();
+        this.editora = livro.getEditora();
+        this.autores = toListaAutorResponse(livro.getAutores());
     }
 
     public Integer getId() {
@@ -68,7 +74,7 @@ public class LivroResponse {
         return dataCriacao;
     }
 
-    public LocalDate getDataAtualizacao() {
-        return dataAtualizacao;
-    }
+    public LocalDate getDataAtualizacao() {return dataAtualizacao;}
+
+    public List<AutorResponse> getAutores() {return autores;}
 }
