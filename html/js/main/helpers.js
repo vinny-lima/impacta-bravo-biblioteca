@@ -29,6 +29,35 @@ const MaskTelefoneOptions = {
     }
 }
 
+const MaskCnpj = (val) => {
+    // Remove tudo que não é número, exceto o último dígito verificador
+    let cnpj = val.replace(/\D/g, '');
+    if (cnpj.length > 14) {
+      cnpj = cnpj.slice(0, 14) + cnpj.slice(15);
+    }
+    // Adiciona a máscara
+    return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  };
+  
+const MaskCnpjOptions = {
+    byPassKeys: [32, 45],
+    onKeyPress: function(val, e, field, options) {
+        field.mask(MaskCnpj(val), options);
+    }
+};
+
+const MaskCep = (val) => {
+// Remove tudo que não é número
+return val.replace(/\D/g, '');
+};
+
+const MaskCepOptions = {
+    byPassKeys: [32],
+    onKeyPress: function(val, e, field, options) {
+        field.mask('00000-000', options);
+    }
+};
+
 const resetarFormulario = (form) => {
     $(form).validate().destroy();
     $(form).find('select').val(null).trigger('change');
@@ -99,43 +128,6 @@ function buscarEndereco(cep) {
       .catch(error => console.error(error));
   }
 
-  function validarTelefone() {
-    const telefone = document.getElementById('editora_telefone');
-
-    telefone.addEventListener('input', function (e) {
-        let valor = telefone.value;
-        valor = valor.replace(/\D/g, ""); // remove todos os caracteres que não são dígitos
-        valor = valor.replace(/^(\d{2})(\d)/g, "($1) $2"); // adiciona o parêntese e o espaço depois do DDD
-        valor = valor.replace(/(\d{4})(\d)/, "$1-$2"); // adiciona o hífen entre os dois últimos blocos de números
-        telefone.value = valor;
-        
-    });
-
-    
-  }
-
   
-  function formatarCnpj() {
-    const cnpj = document.getElementById('editora_documento');
-    let valor = cnpj.value;
-    valor = valor.replace(/\D/g,''); // remove todos os caracteres que não são dígitos
-    valor = valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5"); // formata o valor com pontos, barra e traço
-    cnpj.value = valor;
-  }
-
-  function validarCnpj() {
-    const cnpj = document.getElementById('cnpj');
-    let valor = cnpj.value;
-    valor = valor.replace(/[^\d]+/g,''); // remove todos os caracteres que não são dígitos
-    if(valor.length !== 14) { // verifica se o CNPJ tem 14 dígitos
-      cnpj.setCustomValidity("CNPJ inválido");
-    } else {
-      let cnpjCalculado = calcularDigitoCnpj(valor);
-      if(valor !== cnpjCalculado) {
-        cnpj.setCustomValidity("CNPJ inválido");
-      } else {
-        cnpj.setCustomValidity("");
-      }
-    }
-   
-  }
+  
+  
