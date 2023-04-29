@@ -176,8 +176,30 @@ function iniciarComportamentos() {
                     alert('Erro desconhecido.\nPor favor, recarregue a página e tente novamente.');
             }
             return false;
-        });
+    });
+
+    $('#editora_telefone').mask(MaskTelefone, MaskTelefoneOptions);
+    $('#editora_cep').mask(MaskCep, MaskCepOptions);
+    // $('#editora_documento').mask(MaskCNPJ, MaskCNPJOptions);
 }
+
+function buscarEndereco(cep) {
+    $.ajax({
+      url: `https://viacep.com.br/ws/${cep}/json/`,
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $('#editora_logradouro').val(data.logradouro);
+        $('#editora_bairro').val(data.bairro);
+        $('#editora_municipio').val(data.localidade);
+        $('#editora_uf').val(data.uf);
+        console.log('cep ok');
+      },
+      error: function(error) {
+        console.error(error);
+      }
+    });
+  }
 
 
 function gerenciarEditora (acao = 'adicionar') {
@@ -207,6 +229,7 @@ function addEditora() {
     if ($('#template_editoras #salvar').data('id')) {
         $('#template_editoras #salvar').removeData('id');
     }
+    
     
     if ($('#template_editoras #limpar').data('id')) {
         $('#template_editoras #limpar').removeData('id');
@@ -272,6 +295,7 @@ function addEditora() {
             element.is('select') ? error.appendTo(element.parent()) : error.insertAfter(element);
             $('#template_editoras form label.error').css('color', 'red');
         },
+      
         submitHandler: function (form) {
             console.log('Enviando requisição');
             const dataVar = {
@@ -321,6 +345,13 @@ function addEditora() {
             return false;
         }
     });
+
+    $('#editora_cep').on('change', function () {
+        const cep = $(this).val().replace(/\D/g, '');
+        if (cep.length === 8) {
+          buscarEndereco(cep);
+        }
+      });
 }
 
 function deleteEditora() {

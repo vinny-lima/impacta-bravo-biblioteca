@@ -11,6 +11,7 @@ const MaskISBNOptions = {
     }
 }
 
+
 // Cria validação de ISBN e adiciona ao plugin validator
 $.validator.addMethod('validaISBN', function (value, element) {
     // Checa o tamanho do input sem máscara
@@ -29,34 +30,27 @@ const MaskTelefoneOptions = {
     }
 }
 
-const MaskCnpj = (val) => {
-    // Remove tudo que não é número, exceto o último dígito verificador
-    let cnpj = val.replace(/\D/g, '');
-    if (cnpj.length > 14) {
-      cnpj = cnpj.slice(0, 14) + cnpj.slice(15);
+const MaskCNPJ = (val) => {
+    return val.replace(/\D/g, '').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5')
+}
+   
+const MaskCNPJOptions = {
+byPassKeys: [32],
+onKeyPress: function (val, e, field, options) {
+    field.mask(MaskCNPJ.apply({}, arguments), options);
     }
-    // Adiciona a máscara
-    return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-  };
-  
-const MaskCnpjOptions = {
-    byPassKeys: [32, 45],
-    onKeyPress: function(val, e, field, options) {
-        field.mask(MaskCnpj(val), options);
-    }
-};
+}
 
 const MaskCep = (val) => {
-// Remove tudo que não é número
-return val.replace(/\D/g, '');
-};
-
+    return val.replace(/\D/g, '').length === 8 ? '00000-000' : '00000-0000';
+  };
+  
 const MaskCepOptions = {
-    byPassKeys: [32],
-    onKeyPress: function(val, e, field, options) {
-        field.mask('00000-000', options);
+    onKeyPress: function (val, e, field, options) {
+      field.mask(MaskCep.apply({}, arguments), options);
     }
 };
+  
 
 const resetarFormulario = (form) => {
     $(form).validate().destroy();
@@ -116,18 +110,22 @@ function validarEmail(email) {
 }
 
 function buscarEndereco(cep) {
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("editora_logradouro").value = data.logradouro;
-        document.getElementById("editora_bairro").value = data.bairro;
-        document.getElementById("editora_municipio").value = data.localidade;
-        document.getElementById("editora_uf").value = data.uf;
-        console.log('cep ok')
-      })
-      .catch(error => console.error(error));
+    $.ajax({
+      url: `https://viacep.com.br/ws/${cep}/json/`,
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $('#editora_logradouro').val(data.logradouro);
+        $('#editora_bairro').val(data.bairro);
+        $('#editora_municipio').val(data.localidade);
+        $('#editora_uf').val(data.uf);
+        console.log('cep ok');
+      },
+      error: function(error) {
+        console.error(error);
+      }
+    });
   }
-
   
   
   
