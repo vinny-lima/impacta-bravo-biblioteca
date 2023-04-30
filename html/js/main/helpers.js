@@ -30,28 +30,6 @@ const MaskTelefoneOptions = {
     }
 }
 
-const MaskCNPJ = (val) => {
-    return val.replace(/\D/g, '').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5')
-}
-   
-const MaskCNPJOptions = {
-byPassKeys: [32],
-onKeyPress: function (val, e, field, options) {
-    field.mask(MaskCNPJ.apply({}, arguments), options);
-    }
-}
-
-const MaskCep = (val) => {
-    return val.replace(/\D/g, '').length === 8 ? '00000-000' : '00000-0000';
-  };
-  
-const MaskCepOptions = {
-    onKeyPress: function (val, e, field, options) {
-      field.mask(MaskCep.apply({}, arguments), options);
-    }
-};
-  
-
 const resetarFormulario = (form) => {
     $(form).validate().destroy();
     $(form).find('select').val(null).trigger('change');
@@ -108,24 +86,3 @@ function validarEmail(email) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
 }
-
-function buscarEndereco(cep) {
-    $.ajax({
-      url: `https://viacep.com.br/ws/${cep}/json/`,
-      type: 'GET',
-      dataType: 'json',
-      success: function(data) {
-        $('#editora_logradouro').val(data.logradouro);
-        $('#editora_bairro').val(data.bairro);
-        $('#editora_municipio').val(data.localidade);
-        $('#editora_uf').val(data.uf);
-        console.log('cep ok');
-      },
-      error: function(error) {
-        console.error(error);
-      }
-    });
-  }
-  
-  
-  
