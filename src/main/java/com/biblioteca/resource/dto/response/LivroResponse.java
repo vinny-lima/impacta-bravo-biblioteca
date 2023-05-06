@@ -4,12 +4,14 @@ import com.biblioteca.entities.Editora;
 import com.biblioteca.entities.Livro;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.biblioteca.resource.dto.response.AutorResponse.toListaAutorResponse;
+import static com.biblioteca.resource.dto.response.GeneroLiterarioResponse.toListaGeneroLiterarioResponse;
 
-public class LivroResponse {
+public class LivroResponse implements Serializable {
 
     private final Integer id;
     private final String titulo;
@@ -26,6 +28,8 @@ public class LivroResponse {
 
     private final List<AutorResponse> autores;
 
+    private final List<GeneroLiterarioResponse> generosLiterarios;
+
     public LivroResponse(Livro livro) {
         this.id = livro.getId();
         this.titulo = livro.getTitulo();
@@ -38,6 +42,7 @@ public class LivroResponse {
         this.dataAtualizacao = livro.getDataAtualizacao();
         this.editora = livro.getEditora();
         this.autores = toListaAutorResponse(livro.getAutores());
+        this.generosLiterarios = toListaGeneroLiterarioResponse(livro.getGenerosLiterarios());
     }
 
     public Integer getId() {
@@ -77,4 +82,6 @@ public class LivroResponse {
     public LocalDate getDataAtualizacao() {return dataAtualizacao;}
 
     public List<AutorResponse> getAutores() {return autores;}
+
+    public List<GeneroLiterarioResponse> getGenerosLiterarios() {return generosLiterarios;}
 }

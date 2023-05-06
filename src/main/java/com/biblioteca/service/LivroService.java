@@ -6,11 +6,14 @@ import com.biblioteca.repository.LivroRepository;
 import com.biblioteca.resource.dto.request.LivroRequest;
 import com.biblioteca.resource.dto.response.AutorResponse;
 import com.biblioteca.resource.dto.response.EditoraResponse;
+import com.biblioteca.resource.dto.response.GeneroLiterarioResponse;
 import com.biblioteca.resource.dto.response.LivroResponse;
 import com.biblioteca.service.exceptions.AutorNaoEncontradoException;
 import com.biblioteca.service.exceptions.AutorNullException;
 import com.biblioteca.service.exceptions.EditoraNaoEncontradaException;
 import com.biblioteca.service.exceptions.EditoraNullException;
+import com.biblioteca.service.exceptions.GeneroLiterarioNaoEncontradoException;
+import com.biblioteca.service.exceptions.GeneroLiterarioNullException;
 import com.biblioteca.service.exceptions.LivroJaCadastradoException;
 import com.biblioteca.service.exceptions.LivroNaoEncontradoException;
 import com.biblioteca.service.exceptions.LivroNullException;
@@ -29,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.biblioteca.entities.Autor.toListaAutor;
-import static com.biblioteca.resource.dto.response.AutorResponse.toListaAutorResponse;
+import static com.biblioteca.entities.GeneroLiterario.toListaGeneroLiterario;
 
 @Service
 public class LivroService {
@@ -37,13 +40,16 @@ public class LivroService {
     private final LivroRepository repository;
     private final EditoraService editoraService;
     private final AutorService autorService;
+    private final GeneroLiterarioService generoLiterarioService;
     private final Logger LOG = LoggerFactory.getLogger(LivroService.class);
 
     @Autowired
-    public LivroService(LivroRepository repository, EditoraService editoraService, AutorService autorService) {
+    public LivroService(LivroRepository repository, EditoraService editoraService,
+                        AutorService autorService, GeneroLiterarioService generoLiterarioService) {
         this.repository = repository;
         this.editoraService = editoraService;
         this.autorService = autorService;
+        this.generoLiterarioService = generoLiterarioService;
     }
 
     @Transactional(
@@ -53,9 +59,12 @@ public class LivroService {
                     AutorNullException.class,
                     AutorNaoEncontradoException.class,
                     EditoraNullException.class,
-                    EditoraNaoEncontradaException.class
+                    EditoraNaoEncontradaException.class,
+                    GeneroLiterarioNullException.class,
+                    GeneroLiterarioNaoEncontradoException.class
             })
     public LivroResponse salvar(LivroRequest dto){
+
         LOG.info("LivroService - salvar");
         if (dto == null) throw new LivroNullException("LivroRequest dto é nulo.");
 
@@ -77,6 +86,12 @@ public class LivroService {
             LOG.info("Buscando autores por ids e adicionando autores ao livro");
             List<AutorResponse> autorResponse = autorService.buscarAutoresPorListaIds(dto.getAutoresId());
             livro.adicionarAutores(autorService.listAutorResponseToAutor(autorResponse));
+
+            LOG.info("Buscando generos literarios por ids e adicionando generos literarios ao livro");
+            List<GeneroLiterarioResponse> generoLiterarioResponse = generoLiterarioService
+                    .buscarGenerosLiterariosPorListaIds(dto.getGenerosLiterariosId());
+            livro.adicionarGenerosLiterarios(generoLiterarioService
+                    .listGeneroLiterarioResponseToGeneroLiterario(generoLiterarioResponse));
 
             return new LivroResponse(repository.save(livro));
         } catch (Exception ex){
@@ -115,6 +130,9 @@ public class LivroService {
         //adiconando os autores no livro
         livroSalvo.adicionarAutores(toListaAutor(livroResponseSalvo.getAutores()));
 
+        //adiconando os generos literarios no livro
+        livroSalvo.adicionarGenerosLiterarios(toListaGeneroLiterario(livroResponseSalvo.getGenerosLiterarios()));
+
         BeanUtils.copyProperties(resquest, livroSalvo, "dataCriacao", "isbn");
 
         livroSalvo.setId(id);
@@ -124,6 +142,7 @@ public class LivroService {
         Livro livro = repository.save(livroSalvo);
 
         livro.adicionarAutores(livroSalvo.getAutores());
+        livro.adicionarGenerosLiterarios(livroSalvo.getGenerosLiterarios());
 
         return livroToLivroResponse(livro, editora);
     }
@@ -140,6 +159,9 @@ public class LivroService {
 
         LOG.info("Removendo autores para apagar livro");
         livroSalvo.removerAutores();
+
+        LOG.info("Removendo generos literarios para apagar livro");
+        livroSalvo.removerGenerosLiterarios();
 
         LOG.info("Apagando livro com id: {}", id);
         repository.delete(livroSalvo);

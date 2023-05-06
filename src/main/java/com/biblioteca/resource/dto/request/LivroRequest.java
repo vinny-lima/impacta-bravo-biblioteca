@@ -18,17 +18,18 @@ public class LivroRequest {
     private final Integer paginas;
     @NotBlank(message = "Campo isbn é obrigatório")
     private final String isbn;
-
     @NotNull(message = "Campo quantidade é obrigatório")
     private final Integer quantidade;
     @NotNull(message = "Campo editoraId é obrigatório")
     private final Integer editoraId;
     @NotEmpty(message = "Campo autoresId é obrigatório")
     private final List<Integer> autoresId;
+    @NotEmpty(message = "Campo generosLiterariosId é obrigatório")
+    private final List<Integer> generosLiterariosId;
 
     public LivroRequest(String titulo, String subtitulo, String descricao,
                         Integer paginas, String isbn, Integer quantidade,
-                        Integer editoraId, List<Integer> autoresId) {
+                        Integer editoraId, List<Integer> autoresId, List<Integer> generosLiterariosId) {
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.descricao = descricao;
@@ -37,6 +38,7 @@ public class LivroRequest {
         this.quantidade = quantidade;
         this.editoraId = editoraId;
         this.autoresId = autoresId;
+        this.generosLiterariosId = generosLiterariosId;
     }
 
     public String getTitulo() {
@@ -67,6 +69,8 @@ public class LivroRequest {
 
     public List<Integer> getAutoresId() {return autoresId;}
 
+    public List<Integer> getGenerosLiterariosId() {return generosLiterariosId;}
+
     @Override
     public String toString() {
         return "LivroRequest{" +
@@ -78,6 +82,7 @@ public class LivroRequest {
                 ", quantidade=" + quantidade +
                 ", editoraId=" + editoraId +
                 ", autoresId=" + autoresId.toString() +
+                ", generosLiterariosId=" + generosLiterariosId.toString() +
                 '}';
     }
 }

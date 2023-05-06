@@ -2,10 +2,11 @@ package com.biblioteca.resource.dto.response;
 
 import com.biblioteca.entities.Autor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AutorResponse {
+public class AutorResponse implements Serializable {
 
     private final Integer id;
     private final String nome;

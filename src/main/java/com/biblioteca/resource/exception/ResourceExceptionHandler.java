@@ -4,6 +4,10 @@ import com.biblioteca.service.exceptions.EditoraIntegridadeDadosException;
 import com.biblioteca.service.exceptions.EditoraJaCadastradaException;
 import com.biblioteca.service.exceptions.EditoraNaoEncontradaException;
 import com.biblioteca.service.exceptions.EditoraNullException;
+import com.biblioteca.service.exceptions.GeneroLiterarioIntegridadeDadosException;
+import com.biblioteca.service.exceptions.GeneroLiterarioJaCadastradoException;
+import com.biblioteca.service.exceptions.GeneroLiterarioNaoEncontradoException;
+import com.biblioteca.service.exceptions.GeneroLiterarioNullException;
 import com.biblioteca.service.exceptions.LivroIntegridadeDadosException;
 import com.biblioteca.service.exceptions.LivroJaCadastradoException;
 import com.biblioteca.service.exceptions.LivroNaoEncontradoException;
@@ -19,28 +23,44 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(value = {EditoraIntegridadeDadosException.class, LivroIntegridadeDadosException.class})
+    @ExceptionHandler(value = {
+            EditoraIntegridadeDadosException.class,
+            LivroIntegridadeDadosException.class,
+            GeneroLiterarioIntegridadeDadosException.class
+    })
     public ResponseEntity<ErroPadrao> objetoIntegridadeDeDados(Exception e, HttpServletRequest request){
         ErroPadrao erroPadrao = new ErroPadrao(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
                 "Integridade de dados.", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroPadrao);
     }
 
-    @ExceptionHandler(value = {EditoraNullException.class, LivroNullException.class})
+    @ExceptionHandler(value = {
+            EditoraNullException.class,
+            LivroNullException.class,
+            GeneroLiterarioNullException.class
+    })
     public ResponseEntity<ErroPadrao> objetoNull(Exception e, HttpServletRequest request){
         ErroPadrao erroPadrao = new ErroPadrao(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
                 "Body Request null.", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroPadrao);
     }
 
-    @ExceptionHandler(value = {EditoraJaCadastradaException.class, LivroJaCadastradoException.class})
+    @ExceptionHandler(value = {
+            EditoraJaCadastradaException.class,
+            LivroJaCadastradoException.class,
+            GeneroLiterarioJaCadastradoException.class
+    })
     public ResponseEntity<ErroPadrao> objetoJaCadastrado(Exception e, HttpServletRequest request){
         ErroPadrao erroPadrao = new ErroPadrao(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
                 "Já cadastrado.", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroPadrao);
     }
 
-    @ExceptionHandler(value = {EditoraNaoEncontradaException.class, LivroNaoEncontradoException.class})
+    @ExceptionHandler(value = {
+            EditoraNaoEncontradaException.class,
+            LivroNaoEncontradoException.class,
+            GeneroLiterarioNaoEncontradoException.class
+    })
     public ResponseEntity<ErroPadrao> objetoNaoEncontrado(Exception e, HttpServletRequest request){
         ErroPadrao erroPadrao = new ErroPadrao(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(),
                 "Não encontrado.", e.getMessage(), request.getRequestURI());

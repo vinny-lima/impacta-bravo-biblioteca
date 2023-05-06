@@ -46,6 +46,14 @@ public class Livro {
     )
     private List<Autor> autores;
 
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "livros_generos",
+            joinColumns = @JoinColumn(name = "id_livro", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_genero", referencedColumnName = "id")
+    )
+    private List<GeneroLiterario> generosLiterarios;
+
     public Livro() {}
 
     public Livro(Integer id, String titulo, String subtitulo, String descricao,
@@ -172,6 +180,44 @@ public class Livro {
             if (autor.getLivros().contains(this)) autor.getLivros().remove(this);
         }
     }
+
+    public List<GeneroLiterario> getGenerosLiterarios() {
+        if (generosLiterarios == null) generosLiterarios = new ArrayList<>();
+        return generosLiterarios;
+    }
+
+    public void setGenerosLiterarios(List<GeneroLiterario> generosLiterarios) {this.generosLiterarios = generosLiterarios;}
+
+    public void adicionarGenerosLiterarios(List<GeneroLiterario> generoLiterario){
+        if (generoLiterario != null){
+            for (GeneroLiterario genero : generoLiterario){
+                adicionarGeneroLiterario(genero);
+            }
+        }
+    }
+
+    private void adicionarGeneroLiterario(GeneroLiterario generoLiterario){
+        if (generoLiterario != null && !getGenerosLiterarios().contains(generoLiterario)){
+            getGenerosLiterarios().add(generoLiterario);
+            if (!generoLiterario.getLivros().contains(this)) generoLiterario.getLivros().add(this);
+        }
+    }
+
+    public void removerGenerosLiterarios(){
+        if (!getGenerosLiterarios().isEmpty()){
+            for (GeneroLiterario generoLiterario : getGenerosLiterarios()){
+                removerGeneroLiterario(generoLiterario);
+            }
+        }
+    }
+
+    private void removerGeneroLiterario(GeneroLiterario generoLiterario){
+        if (generoLiterario != null && getGenerosLiterarios().contains(generoLiterario)){
+            getGenerosLiterarios().remove(generoLiterario);
+            if (generoLiterario.getLivros().contains(this)) generoLiterario.getLivros().remove(this);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {

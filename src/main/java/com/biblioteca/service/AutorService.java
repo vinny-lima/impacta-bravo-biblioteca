@@ -61,7 +61,7 @@ public class AutorService {
 
         LOG.info("Atualizando autor com id: {}", id);
         Autor autorSalvo = autorResponseToAutor(autorReponseSalvo);
-        BeanUtils.copyProperties(dto, autorSalvo, "dataCriacao", "nome");
+        BeanUtils.copyProperties(dto, autorSalvo, "dataCriacao", "dataAtualizacao");
         autorSalvo.setId(id);
 
         autorSalvo.setDataCriacao(autorReponseSalvo.getDataCriacao());
@@ -93,23 +93,23 @@ public class AutorService {
 
     public Page<AutorResponse> buscarTodosAutoresPaginado(Integer page, Integer linesPerPage,
                                                           String direction, String orderBy) {
-        LOG.error("AutorService - buscarTodosAutoresPaginado");
+        LOG.info("AutorService - buscarTodosAutoresPaginado");
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
 
-        LOG.error("Buscando todos autores paginado");
+        LOG.info("Buscando todos autores paginado");
         return repository.findAll(pageRequest).map(AutorResponse::new);
     }
 
     public List<AutorResponse> buscarAutoresPorListaIds(List<Integer> autoresId){
-        LOG.error("AutorService - buscarAutoresPorListaIds");
+        LOG.info("AutorService - buscarAutoresPorListaIds");
         try {
-            LOG.error("Buscando autores por lista de ids: {}", autoresId);
+            LOG.info("Buscando autores por lista de ids: {}", autoresId);
             List autoresLista = new ArrayList<>();
             for (Integer autorId : autoresId){
                 AutorResponse autorResponse = buscarPorId(autorId);
                 autoresLista.add(autorResponse);
             }
-            LOG.error("Autores buscados por lista de ids com sucesso!");
+            LOG.info("Autores buscados por lista de ids com sucesso!");
             return autoresLista;
         }catch (Exception ex){
             LOG.error("Erro ao buscar autores por lista de ids: {}", autoresId.toString());
@@ -120,7 +120,7 @@ public class AutorService {
     }
 
     public AutorResponse buscarPorId(Integer id){
-        LOG.error("AutorService - buscarPorId");
+        LOG.info("AutorService - buscarPorId");
 
         if (id == null) throw new AutorNullException("Id nulo para buscar autor por id.");
 

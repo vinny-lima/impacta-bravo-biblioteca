@@ -3,9 +3,10 @@ package com.biblioteca.resource.dto.response;
 import com.biblioteca.entities.Editora;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class EditoraResponse {
+public class EditoraResponse implements Serializable {
     private final Integer id;
     private final String razaoSocial;
     private final String nomeFantasia;
