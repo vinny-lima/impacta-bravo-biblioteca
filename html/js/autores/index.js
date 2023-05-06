@@ -11,7 +11,7 @@ function getAllLivros () {
     const mapOrder = [
         'id',
         'nome',
-        'nomeFantasia'   
+        'nomeFantasia'
     ];
     // Inicializa e configura a tabela
     window['dtAutores'] = $('#tb_autores').DataTable({

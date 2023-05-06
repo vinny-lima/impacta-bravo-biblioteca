@@ -133,7 +133,7 @@ function getOptionsEditoras() {
             if (response?.content?.length) {
                 $('#livro_editora').append(
                     response.content.map(element => new Option(element.nomeFantasia, element.id, false, false))
-                ).trigger('change');
+                ).val(null).trigger('change');
             }
         },
         error: function (response, status) {
@@ -151,7 +151,7 @@ function getOptionsAutores() {
             if (response?.content?.length) {
                 $('#livro_autores').append(
                     response.content.map(element => new Option(element.nomeFantasia, element.id, false, false))
-                ).trigger('change');
+                ).val(null).trigger('change');
             }
         },
         error: function (response, status) {
