@@ -1,3 +1,43 @@
-<header>
-    <h1>Teste 3</h1>
-</header>
+<script defer src="js/generos_literarios/index.js"></script>
+
+<section id="listagem_generos" class="bg-light rounded p-3">
+    <header class="border-bottom pb-2">
+        <div class="text-end">
+            <button id="adicionar" class="btn btn-primary btn-sm">Adicionar</button>
+        </div>
+    </header>
+    
+    <div class="p-3">
+        <table id="tb_generos" class="table table-hover table-responsive w-100">
+            <thead>
+              <tr class="table-primary">
+                <th scope="col">#</th>
+                <th scope="col">Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="template_genero" class="bg-light rounded p-3 d-none">
+    <header class="border-bottom mb-3">
+        <label class="fs-2"></label>
+    </header>
+    <form role="form" id="form_genero">
+        <div class="row">
+            <div class="col-md-12 col-xs-12 mb-3">
+                <label for="descricao_genero" class="form-label">Descrição</label>
+                <input type="text" class="form-control" id="descricao_genero" name="descricao_genero" value=""/>
+            </div>
+           
+            <footer class="text-end border-top pt-3">
+                <button type="reset" id="limpar" class="btn btn-danger btn-sm">Limpar</button>
+                <button type="button" id="voltar" class="btn btn-warning btn-sm">Voltar</button>
+                <button type="submit" id="salvar" class="btn btn-success btn-sm">Salvar</button>
+            </footer>
+        </div>
+    </form>
+</section>

@@ -1,6 +1,4 @@
 getAllLivros();
-getOptionsEditoras();
-getOptionsAutores();
 
 function getAllLivros () {
     // Parametros default do getAll
@@ -21,6 +19,9 @@ function getAllLivros () {
     // Inicializa e configura a tabela
     window['dtLivros'] = $('#tb_livros').DataTable({
         initComplete: function () {
+            getOptionsEditoras();
+            getOptionsAutores();
+            getOptionsGeneros();
             iniciarComportamentos();
         },
         destroy       : true,
@@ -115,7 +116,7 @@ function getLivro(id) {
             $('#livro_unidades').val(response.quantidade);
             $('#livro_editora').val(response.editora.id).trigger('change');
             $('#livro_autores').val(response.autores.map(index => index.id)).trigger('change');
-            // $('#livro_generos').val(response);
+            $('#livro_generos').val(response.generosLiterarios.map(index => index.id)).trigger('change');
             $('#template_livro #limpar, #salvar').data('id', response.id);
         },
         error: function (response, status) {
@@ -151,6 +152,24 @@ function getOptionsAutores() {
             if (response?.content?.length) {
                 $('#livro_autores').append(
                     response.content.map(element => new Option(element.nomeFantasia, element.id, false, false))
+                ).val(null).trigger('change');
+            }
+        },
+        error: function (response, status) {
+            console.log(response);
+        }
+    });
+}
+
+function getOptionsGeneros() {
+    $.ajax({
+        type   : 'GET',
+        url    : rotas.generos_literarios,
+        success: function (response, status) {
+            // console.log(response);
+            if (response?.content?.length) {
+                $('#livro_generos').append(
+                    response.content.map(element => new Option(element.descricao, element.id, false, false))
                 ).val(null).trigger('change');
             }
         },
@@ -248,7 +267,7 @@ function addLivro() {
         $('#template_livro #limpar').removeData('id');
     }
 
-    $('#livro_isbn, #livro_autores').prop('disabled', false);
+    $('#livro_isbn, #livro_autores, #livro_generos').prop('disabled', false);
     
     // Inicia e configura validador do formulário
     $('#template_livro #form_livro').validate({
@@ -264,7 +283,7 @@ function addLivro() {
                 required: true
             },
             livro_generos: {
-                required: false // será required quando o cadastro for implementado
+                required: true
             },
             livro_editora: {
                 required: true
@@ -304,15 +323,15 @@ function addLivro() {
         submitHandler: function (form) {
             console.log('Enviando requisição');
             const dataVar = {
-                titulo    : $('#livro_titulo').val(),
-                subtitulo : $('#livro_subtitulo').val(),
-                descricao : $('#livro_descricao').val(),
-                paginas   : $('#livro_paginas').val(),
-                isbn      : $('#livro_isbn').val(),
-                quantidade: $('#livro_unidades').val(),
-                editoraId : $('#livro_editora').val(),
-                autoresId : $('#livro_autores').val(),
-                generosId : $('#livro_generos').val()
+                titulo             : $('#livro_titulo').val(),
+                subtitulo          : $('#livro_subtitulo').val(),
+                descricao          : $('#livro_descricao').val(),
+                paginas            : $('#livro_paginas').val(),
+                isbn               : $('#livro_isbn').val(),
+                quantidade         : $('#livro_unidades').val(),
+                editoraId          : $('#livro_editora').val(),
+                autoresId          : $('#livro_autores').val(),
+                generosLiterariosId: $('#livro_generos').val()
             }
             console.log(dataVar);
             $.ajax({
@@ -354,7 +373,7 @@ function updateLivro() {
     $('#template_livro #salvar').text('Atualizar');
     // Gerencia atributos do botão de limpar/excluir
     $('#template_livro #limpar').text('Excluir').data('modo', 'excluir');
-    $('#livro_isbn, #livro_autores').prop('disabled', true);
+    $('#livro_isbn, #livro_autores, #livro_generos').prop('disabled', true);
 
     // Inicia e configura validador do formulário
     $('#template_livro #form_livro').validate({
@@ -370,7 +389,7 @@ function updateLivro() {
                 required: true
             },
             livro_generos: {
-                required: false // será required quando o cadastro for implementado
+                required: true
             },
             livro_editora: {
                 required: true
@@ -410,15 +429,15 @@ function updateLivro() {
         submitHandler: function (form) {
             console.log('Enviando requisição');
             const dataVar = {
-                titulo    : $('#livro_titulo').val(),
-                subtitulo : $('#livro_subtitulo').val(),
-                descricao : $('#livro_descricao').val(),
-                paginas   : $('#livro_paginas').val(),
-                isbn      : $('#livro_isbn').val(),
-                quantidade: $('#livro_unidades').val(),
-                editoraId : $('#livro_editora').val(),
-                autoresId : $('#livro_autores').val(),
-                generosId : $('#livro_generos').val()
+                titulo             : $('#livro_titulo').val(),
+                subtitulo          : $('#livro_subtitulo').val(),
+                descricao          : $('#livro_descricao').val(),
+                paginas            : $('#livro_paginas').val(),
+                isbn               : $('#livro_isbn').val(),
+                quantidade         : $('#livro_unidades').val(),
+                editoraId          : $('#livro_editora').val(),
+                autoresId          : $('#livro_autores').val(),
+                generosLiterariosId: $('#livro_generos').val()
             }
             console.log(dataVar);
             $.ajax({
